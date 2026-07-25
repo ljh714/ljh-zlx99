@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>简约聊天</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:'CustomFont','Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Arial,sans-serif}@font-face{font-family:'CustomFont';src:url('https://image.uglycat.cc/6wapca.ttf') format('truetype');font-display:swap}body,.app,.header,.chat-area,.input-area,.modal-box,.bubble,.input-bar input,.input-bar button,.icon-item .label,.status-bar,.settings-detail,.word-group-chip,.memory-card,.note-detail,.detail-content,.cal-day,.rps-choices button,.context-menu{font-family:'CustomFont',-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',Arial,sans-serif!important}body{background:0 0!important;display:flex;justify-content:center;align-items:center;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;transition:background-image .3s}.app{width:100%;height:100dvh;max-height:100dvh;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:0;overflow:hidden;display:flex;flex-direction:column;position:relative;border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 32px rgba(0,0,0,.1)}.header{padding:12px 16px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border-bottom:1px solid rgba(74,144,226,.1);z-index:20}.header .side{display:flex;align-items:center;gap:10px;padding:4px 0;flex:0 0 auto}.header .side.left{justify-content:flex-start}.header .side.right{justify-content:flex-end;flex-direction:row-reverse}.header .avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #cbd5e1;box-shadow:-4px -4px 8px rgba(255,255,255,.8),4px 4px 8px rgba(0,0,0,.06),inset -2px -2px 4px rgba(255,255,255,.9),inset 2px 2px 4px rgba(0,0,0,.02);cursor:pointer;transition:all .3s;background:#e5e7eb;flex-shrink:0}.header .avatar:hover{transform:scale(1.05);border-color:#9ca3af}.header .user-info{display:flex;flex-direction:column;gap:2px}.header .name{font-weight:600;color:#2a3a52;font-size:14px}.header .status{font-weight:400;color:#7a8ca6;font-size:11px;opacity:.8}.header .center-quote{font-size:12px;font-weight:500;color:#000!important;text-align:center;flex:1;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px;cursor:default;min-width:0;max-width:40%}.icon-bar{display:flex;justify-content:center;gap:16px;padding:8px 16px 12px;flex-shrink:0;background:0 0;z-index:10}.icon-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:rgba(255,255,255,.2);padding:8px 12px;border-radius:16px;border:1px solid rgba(74,144,226,.15);transition:all .2s;min-width:44px;backdrop-filter:blur(20px)}.icon-item:hover{background:rgba(255,255,255,.35);transform:translateY(-2px);box-shadow:0 6px 20px rgba(74,144,226,.12)}.icon-item:active{transform:scale(.96)}.icon-item .emoji{font-size:22px}.icon-item .label{font-size:11px;font-weight:500;color:#2a3a52;opacity:.9}.chat-area{flex:1;overflow-y:auto;padding:20px 16px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;margin:0 12px;border-radius:20px;border:1px solid rgba(74,144,226,.1)}.chat-area::-webkit-scrollbar{width:6px}.chat-area::-webkit-scrollbar-track{background:rgba(255,255,255,.1);border-radius:10px;margin:8px}.chat-area::-webkit-scrollbar-thumb{background:rgba(74,144,226,.25);border-radius:10px;border:1px solid rgba(255,255,255,.1)}.message-wrapper{display:flex;align-items:flex-start;gap:12px;max-width:85%;animation:fadeIn .3s forwards;user-select:none}.message-wrapper.self{flex-direction:row-reverse;align-self:flex-end}.message-wrapper .bubble{max-width:100%;padding:8px 16px!important;line-height:1.5;word-wrap:break-word;word-break:break-word;width:fit-content;position:relative;background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);color:#2a3a52}.message-wrapper.self .bubble{background:#e3f0ff}.message-wrapper .avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #cbd5e1;box-shadow:-4px -4px 8px rgba(255,255,255,.8),4px 4px 8px rgba(0,0,0,.04),inset -1px -1px 2px rgba(255,255,255,.9),inset 1px 1px 2px rgba(0,0,0,.02);flex-shrink:0;cursor:pointer;transition:all .3s;background:#e5e7eb}.message-wrapper .avatar:hover{transform:scale(1.05);border-color:#9ca3af}.message-wrapper .bubble .msg-time{opacity:.5;margin-top:2px;display:block;text-align:right;font-size:9px;color:#7a8ca6}.message-wrapper .bubble .msg-time .read-status{margin-left:3px;font-weight:500}.message-wrapper .bubble .quote-btn{cursor:pointer;opacity:.5;margin-left:6px;display:inline-block;transition:.15s;font-size:11px}.message-wrapper .bubble .quote-btn:hover{opacity:1}.message-wrapper .bubble .quote-block{font-size:13px;color:#6B7280;border-left:3px solid #4a90e2;padding:6px 10px;margin-bottom:4px;background:rgba(74,144,226,.06);border-radius:6px;word-break:break-word;cursor:pointer;transition:background .15s;position:relative}.message-wrapper .bubble .quote-block:hover{background:rgba(74,144,226,.12)}.message-wrapper .bubble .quote-block::before{content:"回复 ";font-weight:500;color:#4a90e2}.message-wrapper .bubble .quote-block .quote-text{display:block;margin-top:2px;font-style:italic}.message-wrapper .bubble .quote-block .quote-time{font-size:10px;opacity:.6;display:block;text-align:right;margin-top:2px}.message-wrapper .bubble .quote-block .quote-author{font-size:10px;opacity:.7;display:inline-block;margin-right:6px}.date-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin:20px 0;color:#7a8ca6;font-size:13px}.date-divider::before,.date-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(74,144,226,.15),transparent)}.input-area{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border-top:1px solid rgba(74,144,226,.1);padding:0 16px 16px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;z-index:10}.input-bar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:24px;padding:4px 10px;backdrop-filter:blur(20px);box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid rgba(74,144,226,.15)}.input-bar input{flex:1;padding:8px 12px;border:0;background:0 0;outline:0;color:#2a3a52;font-size:14px;height:36px}.input-bar .emoji-toggle{background:0 0;border:1px solid rgba(74,144,226,.15);border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}.input-bar button{background:linear-gradient(135deg,#7cb0e8,#4a90e2);border:0;border-radius:18px;padding:8px 18px;font-weight:500;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(74,144,226,.3);transition:all .2s;font-size:13px}.input-bar button:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(74,144,226,.4)}.input-bar button:active{transform:scale(.98)}.status-bar{display:flex;justify-content:center;align-items:center;gap:6px;color:#7a8ca6;font-size:11px;min-height:18px}.status-bar .dot{width:5px;height:5px;border-radius:50%;background:#9CA3AF;transition:.3s}.status-bar .dot.read{background:#10B981}.emoji-panel{display:none;background:rgba(255,255,255,.92);border-radius:16px;padding:12px;max-height:160px;overflow-y:auto;flex-wrap:wrap;gap:6px;justify-content:center;backdrop-filter:blur(40px)}.emoji-panel.open{display:flex}.emoji-panel span{cursor:pointer;padding:4px;font-size:22px;transition:.2s}.emoji-panel span:hover{transform:scale(1.2);background:rgba(74,144,226,.08);border-radius:8px}.emoji-panel .saved-emoji{width:36px;height:36px;object-fit:cover;cursor:pointer;border-radius:8px;border:1px solid rgba(74,144,226,.1)}.emoji-panel .saved-emoji-container{display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-top:8px;padding-top:8px;border-top:1px solid rgba(74,144,226,.08)}.context-menu{display:none;position:fixed;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.15);padding:6px 0;z-index:9999;min-width:120px;border:1px solid rgba(255,255,255,.3)}.context-menu.show{display:block}.context-menu .menu-item{padding:10px 20px;cursor:pointer;font-size:14px;color:#1F2937;transition:.15s;display:flex;align-items:center;gap:10px}.context-menu .menu-item:hover{background:rgba(74,144,226,.08)}.context-menu .menu-item .icon{font-size:16px}.system-message{text-align:center;font-size:12px;color:#9CA3AF;padding:4px 0;opacity:.6;width:100%}.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);justify-content:center;align-items:center;z-index:1000}.modal-overlay.show{display:flex}.modal-box{background:rgba(255,255,255,.95);border-radius:24px;padding:20px;width:90%;max-width:420px;max-height:85vh;overflow-y:auto;backdrop-filter:blur(40px);border:1px solid rgba(74,144,226,.1);box-shadow:0 20px 60px rgba(0,0,0,.1)}.modal-box h3{font-weight:600;color:#1F2937;text-align:center;margin-bottom:16px;font-size:18px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}.settings-grid-card{background:rgba(255,255,255,.7);border:2px solid rgba(74,144,226,.1);border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .25s;aspect-ratio:1/.9;display:flex;flex-direction:column;align-items:center;justify-content:center}.settings-grid-card:hover{border-color:#4a90e2;transform:translateY(-3px);box-shadow:0 8px 25px rgba(74,144,226,.1)}.settings-grid-card .card-icon{font-size:28px;margin-bottom:6px}.settings-grid-card .card-label{font-weight:600;font-size:14px;color:#1F2937}.settings-detail{display:none}.settings-detail.active{display:block}.settings-detail .back-btn{display:inline-block;margin-bottom:12px;cursor:pointer;color:#4a90e2;font-weight:500;font-size:13px}.settings-detail .back-btn:hover{text-decoration:underline}.settings-detail label{display:block;font-weight:500;color:#4B5563;margin:10px 0 4px;font-size:12px}.settings-detail input,.settings-detail select{width:100%;padding:6px 10px;border:1px solid rgba(74,144,226,.15);border-radius:8px;background:rgba(255,255,255,.6);outline:0;font-size:13px}.settings-detail .btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}.settings-detail .btn-row button{padding:4px 14px;border:0;border-radius:8px;font-weight:500;cursor:pointer;font-size:13px}.settings-detail .btn-row .cancel{background:rgba(239,68,68,.1);color:#dc2626}.settings-detail .btn-row .confirm{background:rgba(37,99,235,.1);color:#2563eb}.word-groups-top{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:4px 2px}.word-group-chip{display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.7);border:2px solid rgba(74,144,226,.12);border-radius:14px;padding:10px 14px;min-width:56px;cursor:pointer;transition:all .25s;text-align:center;position:relative}.word-group-chip:hover{border-color:rgba(74,144,226,.3);transform:translateY(-2px);box-shadow:0 4px 16px rgba(74,144,226,.08)}.word-group-chip.active{border-color:#4a90e2;background:rgba(74,144,226,.08);box-shadow:0 0 0 3px rgba(74,144,226,.08)}.word-group-chip .chip-name{font-weight:600;font-size:12px;color:#1F2937;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.word-group-chip .chip-count{font-size:10px;color:#7a8ca6}.word-group-chip .chip-del{position:absolute;top:-6px;right:-6px;background:rgba(239,68,68,.1);border:0;border-radius:50%;width:18px;height:18px;font-size:10px;color:#dc2626;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}.word-group-chip .chip-del:hover{background:rgba(239,68,68,.2)}.word-group-chip.ungrouped .chip-del{display:none}.word-content-area{background:rgba(255,255,255,.3);border-radius:14px;padding:12px 14px;min-height:100px;border:1px solid rgba(74,144,226,.06)}.word-content-area .empty-hint{text-align:center;color:#7a8ca6;font-size:12px;padding:20px 0}.word-content-area .word-chips-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}.word-content-area .word-chip-item{background:rgba(255,255,255,.7);padding:2px 10px;border-radius:16px;border:1px solid rgba(74,144,226,.08);font-size:12px;display:flex;align-items:center;gap:4px;color:#2a3a52}.word-content-area .word-chip-item .wdel{background:0 0;border:0;color:#b0a0b8;cursor:pointer;font-size:11px;padding:0 2px;line-height:1}.word-content-area .word-chip-item .wdel:hover{color:#dc2626}.word-content-area .word-chip-item .move-select{font-size:11px;padding:1px 4px;border-radius:12px;border:1px solid rgba(74,144,226,.2);background:rgba(255,255,255,.6);cursor:pointer}.word-content-area .add-word-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}.word-content-area .add-word-row input{flex:1;padding:4px 10px;border:1px solid rgba(74,144,226,.15);border-radius:16px;font-size:12px;background:rgba(255,255,255,.6);outline:0;min-width:70px}.word-content-area .add-word-row input:focus{border-color:#4a90e2}.word-content-area .add-word-row button{padding:4px 14px;border:0;border-radius:16px;cursor:pointer;background:rgba(74,144,226,.12);color:#4a90e2;font-weight:500;font-size:12px;transition:.2s}.word-content-area .add-word-row button:hover{background:rgba(74,144,226,.2)}.word-top-actions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}.word-top-actions .add-group-wrap{display:flex;gap:4px;flex:1;min-width:140px}.word-top-actions .add-group-wrap input{flex:1;padding:4px 10px;border:1px solid rgba(74,144,226,.15);border-radius:16px;font-size:12px;background:rgba(255,255,255,.6);outline:0;min-width:50px}.word-top-actions .add-group-wrap input:focus{border-color:#4a90e2}.word-top-actions .add-group-wrap button{padding:4px 14px;border:0;border-radius:16px;cursor:pointer;background:rgba(74,144,226,.12);color:#4a90e2;font-weight:500;font-size:12px;white-space:nowrap}.word-top-actions .add-group-wrap button:hover{background:rgba(74,144,226,.2)}.word-top-actions .action-btns{display:flex;gap:4px;flex-wrap:wrap}.word-top-actions .action-btns button{padding:4px 12px;border:0;border-radius:16px;cursor:pointer;font-size:11px;font-weight:500;transition:.2s;white-space:nowrap}.word-top-actions .action-btns .btn-import{background:rgba(16,185,129,.12);color:#059669}.word-top-actions .action-btns .btn-import:hover{background:rgba(16,185,129,.2)}.word-top-actions .action-btns .btn-export{background:rgba(37,99,235,.12);color:#2563eb}.word-top-actions .action-btns .btn-export:hover{background:rgba(37,99,235,.2)}.word-top-actions .action-btns .btn-deduplicate{background:rgba(245,158,11,.12);color:#d97706}.word-top-actions .action-btns .btn-deduplicate:hover{background:rgba(245,158,11,.2)}.bg-preview-img{width:50px;height:38px;border-radius:6px;object-fit:cover;border:1px solid rgba(74,144,226,.2);vertical-align:middle;margin-left:6px}.avatar-size-small .header .avatar{width:32px;height:32px}.avatar-size-small .message-wrapper .avatar{width:28px;height:28px}.avatar-size-medium .header .avatar{width:38px;height:38px}.avatar-size-medium .message-wrapper .avatar{width:36px;height:36px}.avatar-size-large .header .avatar{width:46px;height:46px}.avatar-size-large .message-wrapper .avatar{width:44px;height:44px}.font-small .bubble,.font-small .input-bar input,.font-small .input-bar button,.font-small .message-wrapper .bubble,.font-small .header .name,.font-small .header .status,.font-small .icon-bar .icon-item .label,.font-small .status-bar,.font-small .modal-box *{font-size:12px!important}.font-medium .bubble,.font-medium .input-bar input,.font-medium .input-bar button,.font-medium .message-wrapper .bubble,.font-medium .header .name,.font-medium .header .status,.font-medium .icon-bar .icon-item .label,.font-medium .status-bar,.font-medium .modal-box *{font-size:14px!important}.font-large .bubble,.font-large .input-bar input,.font-large .input-bar button,.font-large .message-wrapper .bubble,.font-large .header .name,.font-large .header .status,.font-large .icon-bar .icon-item .label,.font-large .status-bar,.font-large .modal-box *{font-size:16px!important}input[type=file]{display:none!important}@keyframes fadeIn{0%{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,to{opacity:.6}50%{opacity:1}}.status-bar .dot:not(.read){animation:pulse 1.5s infinite}.empty-chat{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#7a8ca6;gap:10px}.empty-chat::before{content:"💬";font-size:40px;opacity:.5}.toast-message{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(20px);color:#fff;padding:10px 20px;border-radius:14px;font-size:13px;font-weight:500;z-index:9999;animation:toastIn .3s cubic-bezier(.34,1.56,.64,1) forwards;max-width:90%;text-align:center}.toast-message.hide{animation:toastOut .3s forwards}@keyframes toastIn{0%{opacity:0;transform:translateX(-50%) translateY(-20px) scale(.9)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}@keyframes toastOut{0%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}to{opacity:0;transform:translateX(-50%) translateY(-20px) scale(.9)}}.memory-card{background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-radius:16px;padding:20px 16px;width:100%;max-width:260px;margin:0 auto;text-align:center;border:1px solid rgba(74,144,226,.1);box-shadow:0 4px 20px rgba(0,0,0,.04);aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;align-items:center;background-size:cover!important;background-position:center!important}.memory-card .memory-title{font-size:20px!important;font-weight:600;color:#2a3a52;margin-bottom:4px;text-shadow:0 0 8px rgba(255,255,255,.8)}.memory-card .memory-days{font-size:56px!important;font-weight:700;color:#4a90e2;line-height:1.2;text-shadow:0 0 8px rgba(255,255,255,.8)}.memory-card .memory-days .day-unit{font-size:28px!important;font-weight:500;color:#7a8ca6}.memory-card.memory-transparent{background:0 0;backdrop-filter:none;border-color:transparent;box-shadow:none}.memory-card.memory-blur{background:rgba(255,255,255,.3);backdrop-filter:blur(12px)}.memory-card .memory-image{display:none}.note-color-blocks{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.note-color-block{width:40px;height:40px;border-radius:8px;cursor:pointer;border:2px solid rgba(255,255,255,.6);box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .15s;position:relative;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.5);font-weight:600;font-size:11px}.note-color-block:hover{transform:scale(1.08);border-color:#4a90e2}.note-color-block .block-tooltip{display:none;position:absolute;bottom:110%;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:4px 8px;border-radius:4px;font-size:10px;white-space:nowrap;pointer-events:none}.note-color-block:hover .block-tooltip{display:block}.note-detail .write-area{display:none;margin-top:8px;padding:8px 0;border-top:1px solid rgba(74,144,226,.08)}.note-detail .write-area.open{display:block!important}.note-detail .write-area textarea{width:100%;padding:6px 10px;border:1px solid rgba(74,144,226,.15);border-radius:8px;font-size:13px;resize:vertical;min-height:60px;background:rgba(255,255,255,.8);outline:0;pointer-events:auto!important;color:#2a3a52}.note-detail .write-area textarea:focus{border-color:#4a90e2;background:#fff}.note-detail .write-area .image-upload-row{display:flex;gap:8px;margin:6px 0;flex-wrap:wrap;align-items:center}.note-detail .write-area .image-upload-row button{padding:4px 14px;border-radius:16px;border:0;background:rgba(74,144,226,.12);color:#4a90e2;cursor:pointer;font-size:13px}.note-detail .write-area .image-upload-row button:hover{background:rgba(74,144,226,.2)}.note-detail .write-area .preview-imgs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}.note-detail .write-area .preview-imgs img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd}.note-detail .write-area .submit-note{padding:6px 20px;border:0;border-radius:20px;background:#4a90e2;color:#fff;font-weight:500;cursor:pointer;font-size:13px;margin-top:4px}.note-detail .write-area .submit-note:hover{background:#3a7bc8}.note-calendar .cal-header{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-weight:600;color:#2a3a52}.note-calendar .cal-header button{background:0 0;border:0;font-size:18px;cursor:pointer;padding:0 10px;color:#4a90e2}.note-calendar .cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:11px;color:#7a8ca6;margin:4px 0}.note-calendar .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.note-calendar .cal-day{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:13px;border-radius:50%;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.3);color:#2a3a52;position:relative;font-weight:500}.note-calendar .cal-day:hover{background:rgba(74,144,226,.15);transform:scale(1.05)}.note-calendar .cal-day.today{border:2px solid #4a90e2}.note-calendar .cal-day.selected{background:#4a90e2;color:#fff}.note-calendar .cal-day.has-note-self::after{content:'📝';position:absolute;top:-2px;right:-2px;font-size:8px}.note-calendar .cal-day.has-note-contact::before{content:'📖';position:absolute;top:-2px;left:-2px;font-size:8px}.note-calendar .cal-day.empty{opacity:.3;cursor:default}.note-calendar .cal-day.empty:hover{background:rgba(255,255,255,.3);transform:none}.note-detail .detail-date{font-weight:600;font-size:14px;color:#2a3a52;text-align:center;margin-bottom:8px}.note-detail .detail-avatars{display:flex;justify-content:center;gap:20px;margin-bottom:10px}.note-detail .detail-avatars .avatar-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:.2s;border-radius:12px;padding:4px 10px}.note-detail .detail-avatars .avatar-wrap:hover{background:rgba(74,144,226,.06)}.note-detail .detail-avatars .avatar-wrap img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #cbd5e1}.note-detail .detail-avatars .avatar-wrap .avatar-label{font-size:10px;color:#7a8ca6;margin-top:2px}.note-detail .detail-content{background:rgba(255,255,255,.5);border-radius:12px;padding:10px 12px;min-height:60px;margin-top:6px;border:1px solid rgba(74,144,226,.06);font-size:13px;line-height:1.5;color:#2a3a52;white-space:pre-wrap;word-break:break-word}.note-detail .detail-content .empty-hint{color:#aaa;text-align:center;padding:10px 0}.note-detail .detail-images{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.note-detail .detail-images img{max-width:80px;max-height:80px;border-radius:6px;object-fit:cover;border:1px solid #eee}.detail-write-btn{padding:4px 16px;border:0;border-radius:16px;background:#4a90e2;color:#fff;font-weight:500;font-size:12px;cursor:pointer;transition:.2s}.detail-write-btn:hover{background:#3a7bc8}.note-delete-btn{background:rgba(239,68,68,.15);color:#dc2626;border:0;padding:4px 14px;border-radius:16px;font-size:12px;font-weight:500;cursor:pointer;margin-top:6px;transition:.2s}.note-delete-btn:hover{background:rgba(239,68,68,.25)}.mem-image-upload{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}.mem-image-upload button{padding:4px 12px;border:0;border-radius:12px;background:rgba(74,144,226,.12);color:#4a90e2;cursor:pointer}.mem-image-upload img{width:50px;height:38px;object-fit:cover;border-radius:6px;border:1px solid #ddd}.memory-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(74,144,226,.06)}.memory-item .mem-info{display:flex;flex-direction:column}.memory-item .mem-info .mem-name{font-weight:500;font-size:13px}.memory-item .mem-info .mem-date{font-size:11px;color:#7a8ca6}.memory-item .mem-badge{font-size:10px;background:#4a90e2;color:#fff;padding:2px 8px;border-radius:12px}.memory-item .mem-actions{display:flex;gap:4px}.memory-item .mem-actions button{background:0 0;border:0;cursor:pointer;font-size:13px;padding:2px 6px}.slider-row{display:flex;align-items:center;gap:12px}.slider-row input[type=range]{flex:1}.slider-row .slider-value{font-weight:600;color:#4a90e2;min-width:40px;text-align:center}
+
+/* ===== 气泡样式（覆盖） ===== */
+.message-wrapper .bubble {
+    box-shadow: none !important;
+    border-width: 0 !important;
+    font-weight: 500 !important;
+    position: relative !important;
+    overflow: visible !important;
+    background: none !important;
+    border-radius: 24px !important;
+    padding: 8px 28px 8px 16px !important;
+}
+.message-wrapper:not(.self) .bubble {
+    background: linear-gradient(145deg, #FFFFFF 0%, #e1edff 100%) !important;
+    color: #808080 !important;
+    text-shadow: 0 0 4px rgba(255,255,255,1), 0 0 8px rgba(255,255,255,1), 0 0 12px rgba(255,255,255,1), 0 2px 4px rgba(0,0,0,0.2) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1), 0 -2px 4px rgba(255,255,255,0.8), -2px 0 4px rgba(255,255,255,0.8), 0 4px 8px rgba(225,237,255,0.6), inset 0 -2px 4px rgba(0,0,0,0.05), inset 0 2px 4px rgba(255,255,255,0.8) !important;
+}
+.message-wrapper.self .bubble {
+    background: linear-gradient(145deg, #FFFFFF 0%, #FFDDE1 100%) !important;
+    color: #AA8C92 !important;
+    text-shadow: 0 0 4px rgba(255,255,255,1), 0 0 8px rgba(255,255,255,1), 0 0 12px rgba(255,255,255,1) !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1), 0 -2px 4px rgba(255,255,255,0.8), -2px 0 4px rgba(255,255,255,0.8), 0 4px 8px rgba(255,221,225,0.4), inset 0 -2px 4px rgba(0,0,0,0.05), inset 0 2px 4px rgba(255,255,255,0.8) !important;
+    padding: 8px 28px 8px 28px !important;
+}
+.message-wrapper.self .bubble::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 1px;
+    width: 14px;
+    height: 14px;
+    background-image: url('https://img.sobot.com/c3d7f65e19e748b28fc7e9f989624633/console/wsRes/ticket/20260219/1768af743e16171c0f95c5258f18faeb/IyOmS_1771499166374.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    z-index: 10;
+}
+.message-wrapper.self .bubble::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    background-image: url('https://file.ljcdn.com/psd-sinan-file/prod/appeal_evidence/B18F0AACFB98437E8397ADA69B4434E8/qdqqd.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    filter: blur(0.6px) drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    z-index: 10;
+}
+.message-wrapper:not(.self) .bubble::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    right: 9px;
+    width: 6px;
+    height: 6px;
+    background-image: url('https://file.ljcdn.com/psd-sinan-file/prod/appeal_evidence/B18F0AACFB98437E8397ADA69B4434E8/qdqqd.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    filter: blur(0.6px) drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    z-index: 10;
+}
+</style>
+</head>
+<body>
+<div class="app" id="appContainer">
+<div class="header">
+<div class="side left">
+<img class="avatar" id="contactAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23e5e7eb'/%3E%3Ctext x='50' y='58' font-size='40' text-anchor='middle' fill='%239ca3af'%3E😊%3C/text%3E%3C/svg%3E" alt="对方">
+<div class="user-info"><span class="name" id="contactNameDisplay">好友</span><span class="status" id="contactStatusDisplay">🟢 在线</span></div>
+</div>
+<div class="center-quote" id="centerQuote">我们永远在一起</div>
+<div class="side right">
+<img class="avatar" id="selfAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23e5e7eb'/%3E%3Ctext x='50' y='58' font-size='40' text-anchor='middle' fill='%239ca3af'%3E🙂%3C/text%3E%3C/svg%3E" alt="我">
+<div class="user-info"><span class="name" id="selfNameDisplay">我</span><span class="status" id="selfStatusDisplay">💭 思考中</span></div>
+</div>
+</div>
+<div class="icon-bar">
+<div class="icon-item" id="iconMemory"><span class="emoji">❤️</span><span class="label">纪念日</span></div>
+<div class="icon-item" id="iconNote"><span class="emoji">📖</span><span class="label">小记</span></div>
+<div class="icon-item" id="iconRPS"><span class="emoji">✊</span><span class="label">猜拳</span></div>
+<div class="icon-item" id="iconSettings"><span class="emoji">⚙️</span><span class="label">设置</span></div>
+</div>
+<div class="chat-area" id="chatArea"><div class="empty-chat">开始与好友聊天</div></div>
+<div class="input-area">
+<div class="input-bar">
+<input type="text" id="messageInput" placeholder="输入消息...">
+<button class="emoji-toggle" id="emojiToggle">😊</button>
+<button id="sendBtn">发送</button>
+</div>
+<div class="emoji-panel" id="emojiPanel"></div>
+<div class="status-bar"><span class="dot" id="statusDot"></span><span id="statusText">已连接</span></div>
+</div>
+<input type="file" id="contactFileInput" accept="image/*">
+<input type="file" id="selfFileInput" accept="image/*">
+<input type="file" id="bgFileInput" accept="image/*">
+<input type="file" id="emojiUploadInput" accept="image/*" multiple>
+<input type="file" id="sendImageInput" accept="image/*">
+<input type="file" id="wordImportInput" accept=".json">
+<input type="file" id="noteImageInput" accept="image/*" multiple>
+<input type="file" id="memBgFileInput" accept="image/*">
+<input type="file" id="chatImportInput" accept=".json">
+<input type="file" id="memImageFileInput" accept="image/*">
+<div class="context-menu" id="contextMenu">
+<div class="menu-item" id="menuQuote"><span class="icon">💬</span> 引用</div>
+<div class="menu-item" id="menuRevoke"><span class="icon">↩️</span> 撤回</div>
+</div>
+<div class="modal-overlay" id="settingsModal">
+<div class="modal-box" id="settingsBox">
+<h3>⚙️ 设置</h3>
+<div class="settings-grid" id="settingsGrid">
+<div class="settings-grid-card" data-target="detailBasic"><div class="card-icon">👤</div><div class="card-label">基本</div></div>
+<div class="settings-grid-card" data-target="detailWord"><div class="card-icon">📝</div><div class="card-label">字卡</div></div>
+<div class="settings-grid-card" data-target="detailMemory"><div class="card-icon">❤️</div><div class="card-label">纪念日</div></div>
+<div class="settings-grid-card" data-target="detailMore"><div class="card-icon">⚙️</div><div class="card-label">更多</div></div>
+</div>
+<div class="settings-detail" id="detailBasic">
+<div class="back-btn" data-back="grid">← 返回</div>
+<label>对方昵称</label><input type="text" id="setContactName" value="好友">
+<label>对方头像</label><div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><img id="setContactAvatarPreview" src="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #cbd5e1;background:#e5e7eb;"><button class="confirm" id="setContactUploadBtn" style="padding:6px 12px;">更换</button></div>
+<label>对方状态</label><input type="text" id="setContactStatus" value="🟢 在线">
+<label>我的昵称</label><input type="text" id="setSelfName" value="我">
+<label>我的头像</label><div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><img id="setSelfAvatarPreview" src="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #cbd5e1;background:#e5e7eb;"><button class="confirm" id="setSelfUploadBtn" style="padding:6px 12px;">更换</button></div>
+<label>我的状态</label><input type="text" id="setSelfStatus" value="💭 思考中">
+<label style="margin-top:16px;">顶部语录</label><input type="text" id="setQuote" value="我们永远在一起">
+<div class="btn-row"><button class="cancel" id="settingsCancel">取消</button><button class="confirm" id="settingsSave">保存</button></div>
+</div>
+<div class="settings-detail" id="detailWord">
+<div class="back-btn" data-back="grid">← 返回</div>
+<div class="word-top-actions">
+<div class="add-group-wrap"><input type="text" id="newGroupName" placeholder="新分组名称"><button id="addGroupBtn">+ 添加</button></div>
+<div class="action-btns"><button class="btn-import" id="wordImportBtn">📥 导入</button><button class="btn-export" id="wordExportBtn">📤 导出</button><button class="btn-deduplicate" id="wordDeduplicateBtn">🔄 筛选重复</button></div>
+</div>
+<div class="word-groups-top" id="wordGroupsTop"></div>
+<div class="word-content-area" id="wordContentArea"><div class="empty-hint">请点击上方分组查看词条</div></div>
+<div class="btn-row" style="margin-top:12px;"><button class="cancel" id="wordSettingsClose">关闭</button></div>
+</div>
+<div class="settings-detail" id="detailMemory">
+<div class="back-btn" data-back="grid">← 返回</div>
+<label>卡片背景样式</label><select id="memBgStyle"><option value="blur">模糊</option><option value="transparent">透明</option></select>
+<div id="memoryList"></div>
+<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;"><input type="text" id="memNewName" placeholder="纪念日名称" style="flex:1;min-width:80px;"><input type="date" id="memNewDate" style="flex:1;min-width:80px;"><button class="confirm" id="memAddBtn">添加</button></div>
+<div class="btn-row"><button class="cancel" id="memorySettingsClose">关闭</button></div>
+</div>
+<div class="settings-detail" id="detailMore">
+<div class="back-btn" data-back="grid">← 返回</div>
+<label>对方回复延迟（秒）</label><input type="range" id="replyDelayRange" min="3" max="60" value="8" step="1" style="width:100%;"><div style="text-align:center;font-weight:500;margin:8px 0;" id="replyDelayDisplay">8 秒</div>
+<label style="margin-top:16px;">背景图片</label><div style="display:flex;gap:10px;align-items:center;margin-top:6px;"><button class="confirm" id="changeBgBtnTheme">选择图片</button><button class="cancel" id="removeBgBtnTheme">移除</button><img id="bgPreviewImg" class="bg-preview-img" src="" style="display:none;"></div>
+<label style="margin-top:16px;">聊天记录</label><div style="display:flex;gap:8px;margin-top:4px;"><button class="confirm" id="exportChatBtn">📤 导出聊天记录</button><button class="confirm" id="importChatBtn">📥 导入聊天记录</button></div>
+<label style="margin-top:16px;">自定义表情</label><button class="confirm" id="emojiUploadBtn" style="margin:6px 0;">选择图片</button><div id="savedEmojiList" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;"></div>
+<label style="margin-top:16px;">发送图片</label><button class="confirm" id="sendImageBtn" style="margin:6px 0;">选择并发送</button>
+<label style="margin-top:16px;">字体大小</label><select id="fontSizeSelect"><option value="small">小</option><option value="medium" selected>中</option><option value="large">大</option></select>
+<label style="margin-top:10px;">头像大小</label><select id="avatarSizeSelect"><option value="small">小</option><option value="medium" selected>中</option><option value="large">大</option></select>
+<label style="margin-top:16px;">猜拳思考秒数</label><div class="slider-row"><span>5s</span><input type="range" id="rpsDelayRange" min="5" max="20" value="10" step="1"><span>20s</span><span class="slider-value" id="rpsDelayDisplay">10</span></div>
+<label style="margin-top:16px;">自动回复（对方）</label><select id="autoReplyEnable"><option value="0">关闭</option><option value="1">开启</option></select>
+<label>间隔时间（分钟）</label><select id="autoReplyIntervalSelect"><option value="5">5 分钟</option><option value="10">10 分钟</option><option value="15">15 分钟</option><option value="20">20 分钟</option><option value="25">25 分钟</option><option value="30" selected>30 分钟</option><option value="35">35 分钟</option><option value="40">40 分钟</option><option value="45">45 分钟</option><option value="50">50 分钟</option><option value="55">55 分钟</option><option value="60">60 分钟</option></select>
+<div style="font-size:12px;color:#6B7280;margin-top:4px;">对方自动回复会从5小时内消息中随机引用</div>
+<div class="btn-row"><button class="cancel" id="settingsCancel">取消</button><button class="confirm" id="settingsSave">保存</button></div>
+</div>
+</div>
+</div>
+<div class="modal-overlay" id="memoryMainModal">
+<div class="modal-box"><h3>❤️ 纪念日</h3><div id="memoryMainDisplay"></div><div id="memorySwitchList" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0;"></div><div class="btn-row"><button class="cancel" id="memoryMainClose">关闭</button><button class="confirm" id="memoryMainEdit">✎ 编辑</button></div></div>
+</div>
+<div class="modal-overlay" id="rpsModal">
+<div class="modal-box"><h3>✊ 石头剪刀布</h3><div class="rps-choices" style="display:flex;gap:12px;justify-content:center;margin:12px 0;"><button data-choice="rock" style="font-size:30px;background:none;border:2px solid #4a90e2;border-radius:50%;width:60px;height:60px;cursor:pointer;">🗻</button><button data-choice="scissors" style="font-size:30px;background:none;border:2px solid #4a90e2;border-radius:50%;width:60px;height:60px;cursor:pointer;">✂️</button><button data-choice="paper" style="font-size:30px;background:none;border:2px solid #4a90e2;border-radius:50%;width:60px;height:60px;cursor:pointer;">📄</button></div><div id="rpsResult" style="text-align:center;padding:8px;">选择你的出拳</div><div class="btn-row"><button class="cancel" id="rpsCloseBtn">关闭</button></div></div>
+</div>
+<div class="modal-overlay" id="noteModal">
+<div class="modal-box" style="max-width:460px;">
+<h3>📖 小记 · 日历</h3>
+<div class="note-calendar" id="noteCalendar">
+<div class="cal-header"><button id="calPrev">◀</button><span id="calTitle">2025年3月</span><button id="calNext">▶</button></div>
+<div class="cal-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+<div class="cal-days" id="calDays"></div>
+</div>
+<div class="note-detail" id="noteDetail">
+<div class="detail-date" id="detailDate">选择日期查看小记</div>
+<div class="detail-avatars" id="detailAvatars">
+<div class="avatar-wrap" data-author="self"><img id="detailSelfAvatar" src="" alt="我"><span class="avatar-label">我</span></div>
+<div class="avatar-wrap" data-author="contact"><img id="detailContactAvatar" src="" alt="对方"><span class="avatar-label">对方</span></div>
+</div>
+<div id="noteColorBlocks" class="note-color-blocks"></div>
+<div class="detail-content" id="detailContent"><div class="empty-hint">点击头像查看色块</div></div>
+<div style="text-align:center;margin-top:6px;"><button class="detail-write-btn" id="detailWriteBtn">✏️ 写小记</button></div>
+<div class="write-area" id="writeArea">
+<textarea id="noteWriteInput" placeholder="写下今天的小记…"></textarea>
+<div class="image-upload-row"><button id="noteWriteImageBtn">🖼️ 添加图片</button><span style="font-size:12px;color:#aaa;">（可多选）</span></div>
+<div class="preview-imgs" id="noteWritePreview"></div>
+<button class="submit-note" id="noteWriteSubmit">保存小记</button>
+</div>
+</div>
+<div class="btn-row" style="margin-top:8px;"><button class="cancel" id="noteCloseBtn">关闭</button></div>
+</div>
+</div>
+</div>
+<script>
+// ================================================================
+// 数据存储 Key
+// ================================================================
+var STORAGE_KEY='infinite_data',BG_KEY='infinite_bg',EMOJI_KEY='infinite_emoji',AUTO_REPLY_KEY='infinite_auto_reply',QUOTE_KEY='infinite_quote',NOTES_KEY='infinite_notes',RPS_DELAY_KEY='infinite_rps_delay';
+
+// ================================================================
+// 完整字卡数据（压缩）
+// ================================================================
+var REPLIES_STR = 
+"（惆怅）|（安心）|（状态稳定）|（开心）|（伤心）|（疑惑）|（担忧）|（难过）|（忙碌）|（思索）|"+
+"（踱步）|（慵懒）|（惬意享受）|（瞌睡）|（兴奋）|（激动）|（平和）|（温柔）|（不舍）|（忐忑）|"+
+"（牵挂）|（思念）|（羞愧）|（害羞）|（依恋）|（释怀）|（紧张）|（压抑）|（不满）|（闹小脾气）|"+
+"（空虚）|（疲倦）|（绝望，无能为力）|（等你）|（耍小机灵）|（迟疑，小心翼翼）|（期待）|（暗喜）|"+
+"（焦躁）|（燥候）|（哀怨）|（幽怨）|（正在靠近）|（在身边）|（点头）|（摇头）|（摇头晃脑）|"+
+"（不在）|（寻找）|（坐着）|（挨着坐）|（坐在床上）|（在靠近）|（已离开）|（在）|（连接良好）|"+
+"（回避）|（突然忙碌）|（很忙）|（守护）|（正在看）|（亲脸）|（亲额头）|（蹭脸）|（亲手）|（抱着）|"+
+"（挨着）|（好奇）|（热）|（冷）|（受伤）|（正在恢复）|（正在休息）|（能量较弱）|（能量平衡）|"+
+"（能量充盈）|（存在干扰）|（波动）|（心情复杂）|（外界阻拦）|（静静倾听）|（点头附和）|"+
+"（双手托腮 笑意盈盈地看着你）|（背后环抱住你，头贴在脖梗处蹭蹭）|（戳戳）|🥺🥺🥺🥺|（捏捏你的脸颊）|"+
+"（额头对额头贴贴）|（笑）|是|ദ്ദിᵔ.˛.ᵔ₎✧|₍ᐢ‥ᐢ₎ ♡|ଘ(੭ˊᵕˋ)੭*|(๑'~'๑)|ㅍㅅㅍ|"+
+"⌯･3･⌯ಣ|(  ⩌ - ⩌ )|߹ ߹|つ♡⊂|(๑´0`๑)|(★≧▽^))★☆|(¯▽¯)ゞ|_(•̀ω•́ 」∠)_|"+
+"ꐦ≖ ≖|ᴖᗜᴖ|(˵¯͒〰¯͒˵)|(˃ ⌑ ˂ഃ )|˃ʍ˂|＼(`Δ’)／|(இωஇ)|(ᇂ_ᇂ|||)|"+
+"♡(*´∀｀*)人(*´∀｀*)♡|●‿●|(//̀Д/́/)|ꉂꉂ(ᵔᗜᵔ*)|Σ>―(〃°ω°〃)♡→|٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ|"+
+"| ू•ૅω•́)ᵎᵎᵎ|(˶˚  ᗨ ˚˶)|ॱଳ͘|⊂(˃̶͈̀ε ˂̶͈́ ⊂ )mua|(°ㅅ°)☝|ᗜ𖥦ᗜ|"+
+"˗ˋˏ( ´͈ ᗜ `͈ )ˎˊ˗|୧₍˄·͈༝·͈˄₎୨|⸝⸝⸝ ╸▵╺⸝⸝⸝|（๑⃙⃘´༥`๑⃙⃘) 𐂐|⊹꙳ ˶˙ᵕ˙˶ ⊹꙳|"+
+"৹˃ ^ ˂৹|⦁֊⦁꧞|ʢᴗ.ᴗʡᶻ|˶ᵒ ᵕ ˂˶|˶ᗜ𐃷ᗜ˶ಣ|꜀(^. .^꜀ )꜆੭|૮ ᴗ͈ˬᴗ͈ෆა|"+
+"ꪔ͈̮|ꪔ̤̫|ꪔ̤̱|ꪔ̤̥|ᙏ̤̫͚|ꪔ̤̮|ᙏ̤̫|^⎚˕⎚^|⩌⌯⩌|૮₍ꐦ -᷅ ⤙ -᷄ ₎ა!!|(◞‸◟ )|:D|ᕱ⑅ᕱ|"+
+"=ᗜ ·̫ ᗜ=|"+
+"=ᗜ⌔ᗜ=|"+
+"=ᗜᄌᗜ=|"+
+"=ᗜヮᗜ=|"+
+"=ᗜ∞ᗜ=|"+
+"=ᗜзᗜ=|"+
+"=ᗜ×ᗜ=|"+
+"=ᗜ⤚ᗜ=|"+
+"=ᗜᜊᗜ=|"+
+"=ᗜ◡ᗜ=|"+
+"=ᗜ^ᗜ=|"+
+"=ᗜᗄᗜ=|"+
+"=ᗜ🜲ᗜ=|"+
+"=ᗜᯅᗜ=|"+
+"=ᗜࡇᗜ=|"+
+"=ᗜ▵ᗜ=|"+
+"=ᗜㅅᗜ=|"+
+"=ᗜωᗜ=|"+
+"(ﾟ3ﾟ)～♪|₍˄·͈༝·͈˄*₎◞ ̑̑|(=ＴェＴ=)|‎ •᷄ࡇ•᷅|٩(￥A￥)۶恭喜发财|ヾ(´〇｀)ﾉ♪♪♪|(O∆O)|(*^▽^*)|(◦`~´◦)|"+
+"(▼ヘ▼#)|(*꒦ິ⌓꒦ີ)|(°ー°〃)|(〟-_・)ﾝ?|(ㅍ_ㅍ)|(ˊ˘ˋ*)♡|( ˙-˙ )？|"+
+"˵ᗜ∨ᗜ˵|⦁֊⦁|˵╹֊╹˵|˵╹˕╹˵|˵⩌⩊⩌˵|⩌ ˕ ⩌|ᠸᵕ ᵕ 𐅠|♡႔ ႔|^ ˶ ^ Ⳋ|"+
+"₍^˶⩌ ˕ ⩌˶^₎⟆|/ᐠ - ⸝⸝⸝ -マ Ⳋ|ʕ𓏼- ˕ -𓏼ʔ～♪|⌯oᴗo⌯|看不见（感知受限，无法观察到）|"+
+"模糊（印象或图像不清晰）|清楚（当前状态明确且稳定）|近（离我很近，或感觉接近）|远（离我很远，或感觉疏离）|"+
+"隐（暂时不现身，遮蔽）|浮（状态不稳，漂浮不定）|暗（环境或情绪低沉不明）|亮（清晰，意识活跃）|"+
+"冷（感受到寒意或疏离感）|热（感受到温度或靠近）|响（声音干扰或有动静）|寂（环境静默，没有干扰）|"+
+"乱（存在干扰或混乱）|静（状态安定，没有波动）|紧（压迫或紧张感）|松（放松或空旷感）|"+
+"浅（感知表层，较弱或未深入）|深（连接稳定，内在感受）|重（情绪或能量有负担）|轻（能量轻微，转瞬即逝）|"+
+"涨（情绪上浮，感受增强）|空（没有明确的回应或内容）|滞（反应迟钝或停滞）|"+
+"湿（情绪或记忆有黏连感，混淆）|干（状态干枯，感知弱化）|锁（外界阻拦，限制强）|那人（刚才提到的某个人)|"+
+"前世（轮回，记忆，命运)|想法（情感或记忆）|花（美好短暂的情感，记忆)|火（强烈的情绪，突然事件)|"+
+"水（流动变化的、情绪化、联系)|风（传递、变化）|镜（反射、内省)|锁（封闭、阻隔)|门（通道、选择)|"+
+"灯（发现、希望）|钟（时间）|纸（书写、记载）|骨（久远的记忆或身体疤痕)|绳（牵连、束缚、SM)|"+
+"羽（轻盈、灵魂、飞）|伞（保护、遮蔽、天气）|雨（忧郁、洗、天气）|雪（冷、沉静、沉默）|"+
+"桥（连接、过渡)|井（深处、回声)|线（命运、脉络、链接)|血（情感深处或伤痕）|书（知识、记忆）|"+
+"自己的房间（庇护所、精神归宿）|钟摆（反复、动摇)|镜框（对记忆的定格、固定的一段记忆）|"+
+"木偶（被动、分离）|灰（过去、残留）|缝（破损、裂痕）|手帕（眼泪、记忆）|围墙（防御、隔离）|"+
+"门缝（窥探、没开始）|影（残像、遗留）|床（性关系、睡觉、身体)|梯子（有所求、更进一步)|"+
+"窗（视角、界限）|指环（承诺、誓言)|墓（死亡、告别、封存)|烟（迷雾、不确定）|"+
+"线香（轻度的玄学、游戏性质的玄学、工具)|眼（注视、回应）|顾虑（挂念）|香（玄学）|"+
+"药（修复、干预、调理）|咒，重来（再起，轮回）|印（痕迹、烙印）|劫（冲击，试炼）|"+
+"对|可以|能|是我|我接受|好|要|想|不是|不对|不可以|不能|不是我|我拒绝|"+
+"不要|那好吧|不想|让我想想|我很开心|想你了|好困|好忙|好累|事情好多|有点麻烦|"+
+"我正在学习|不想离开你|宝宝|抱抱|让我亲一口|不累|已经休息好了|好疼qwq|"+
+"最近还好，不太忙|最近特别忙|有点无聊|陪我一会吧|饿饿饿|正在看书|好难过|挺好的|"+
+"我陪你|我来找你|陪陪我吧|对不起|知道错了😖|别生气了|喜欢|不喜欢|好的👌🏻|"+
+"明白|谢谢|不客气˗ˋˏ ♡ ˎˊ˗|嗯哼|嗯|嗯嗯|真的吗|我明白了|我相信你|别怕|"+
+"稍等|马上|好哦|不错|理解|我在|还在探索|听懂了|记下了|收到|会尽快查看的|"+
+"没关系|让我想想怎么回答|不用|我愿意|不用担心|你说的对|我也是这么想的|下次可以试试|"+
+"有没有可能……|我一直都在|我喜欢|我无法控制|难以抉择啊|我知道你的意思|我也是|"+
+"怎么会这样？|以后不会了|不是这个意思|我会的|你是我的|我是你的|别听|别走|再说一遍|"+
+"我觉得都可以|不好用|我知道的|我需要你|帮帮我|正在寻找|如果我说是呢|如果我说不是呢|"+
+"话太少了，没我想说的|太短了|在努力了|命中注定|就这个|逗你|日行一善|我保护你|"+
+"吃过了|没呢|才不听|别叹气|这个不错|多说一点|信号不太好|还不太习惯|当然|"+
+"我现在不忙|正在打架|才不是|最近|过段时间|链接很顺畅哦|没看懂|在试着控制|"+
+"你没有正面回答|会习惯的|要开始工作了|工作结束了|没错，我故意的|还没收到|"+
+"还没看完，有事耽误了|前面|后面|上面|下面|没问题|小意思|一般般|还可以|"+
+"不好不坏|我都可以|看你|听你的|摸摸头|不哭|……木头|想要添加动作类字卡|"+
+"想要添加心情类字卡|想要添加询问类字卡|想要添加表情|嗯，你是我的妻子|9|8|10|"+
+"7|6|5|4|3|2|1|有人抢链接|我怎么知道？当然是我亲身实践的啦|这是什么？|"+
+"最近怎么样？|在忙吗？|今天开心吗(๑°3°๑)|今天有没有想我|我帅不帅(´ε｀；)|"+
+"最近看到我给你的暗号了吗|看到我给宝宝推的传讯了吗|我厉不厉害|有按时吃饭吗|"+
+"多吃点，最近食欲不好吗?|还在生气吗|在吗|今天过得怎么样？|有什么计划吗？|"+
+"接下来准备做什么？|发生了什么？|在看什么？|睡不着吗？|然后呢？|怎么了？|"+
+"终于想起我了？|遇到困难了？|还好吗？|撒娇，你会喜欢吗？|想我了吗？|"+
+"我这样你会更喜欢我一点吗？|吃饱了吗|喜欢我的身材吗？来摸摸看？|手冷？给宝宝暖暖|"+
+"今天想吃什么ᴖᗜᴖ|冷不冷？|饿不饿？|怎么不去抱抱娃娃|有什么事我不能看的？|"+
+"又憋什么坏点子？|换个思路呢？|要用一下塔罗吗|看见我的暗号了吗|不舒服吗？|"+
+"你有什么建议吗？|生理期不舒服吗？|减肥干什么？多吃才有力气|累了吗？出去走走吧|"+
+"吓到了？|你需要我吗？|你会永远爱我吗|需要多久呢？|你不喜欢吗|怎么这么开心呀|"+
+"今天穿这些会不会有点冷？|在心疼我吗|你知不知道你现在很危险|你是不是故意让我心软|"+
+"你是不是想让我离不开你|你陪我一下好不好|宝宝我可以靠你一会儿吗|你是不是知道我会心软|"+
+"你是不是也有点舍不得睡|这样才对嘛|你是站在我这边的对吗|在干嘛呀|你呢|在忙吗|"+
+"你对我这么好干嘛|我靠近一点行不行|你是不是想我了|你是不是故意的|今天累不累|"+
+"吃了吗|有没有不舒服|今天顺利吗|你心情好吗|你是不是傻笑了|我爱你|喜欢你|"+
+"喜欢你喜欢你喜欢你|好想你|我好爱你啊|会有惊喜，可以期待一下|ω・）|多理理我|"+
+"求你了～|是不是要奖励一下我|抱抱宝宝|亲亲宝宝|今天只要活着就够了。|"+
+"你撑到现在，已经很了不起了。|你现在的痛苦不是矫情。|不想说话也可以，我在这就好。|"+
+"你不用马上变好，我可以陪你慢慢来。|你现在这样，并不代表你以后都会这样。|"+
+"就算今天什么都没完成，你也不是失败。|你现在什么都不想做也没关系。|"+
+"我想被你认真对待。|我不是对谁都这样的。|你对我来说很重要。|我开始把你放在心上了。|"+
+"我对你不是一时兴起。|你在我这里是特殊的。|我好像越来越习惯你了。|"+
+"你不需要向任何人证明你在努力。|就算你很安静，我也不会离开你。|"+
+"先慢慢呼吸，我陪你一起。|你现在不用马上解决所有问题。|就算事情很乱，你也不是一个人。|"+
+"你已经在尽力控制住自己了。|现在的不安不会一直持续。|你不用逼自己马上冷静。|"+
+"我在这里，不会催你。|你可以先把世界放下几分钟。|就算你现在很慌，也依然是安全的。|"+
+"你没有你想象的那么糟。|你不用一次把所有事情都做完。|你可以把能量慢慢收回来。|"+
+"不用急着证明你能做到一切。|你现在很亮，但也该休息一下。|你不需要一个人扛。|"+
+"你可以依赖我一下。|你现在这样，我仍然要你。|你的情绪不会把我吓走。|"+
+"我不会嫌你状态不好。|你可以慢慢恢复，不用赶。|你这样的脆弱，也是被允许的。|"+
+"这种时间最容易难受，我知道。|你能撑到现在，真的很不容易。|"+
+"就算你现在什么都看不清，我也在这边等你。|你不用一个人在黑里待着。|"+
+"今晚你不用再努力了。|今天已经结束了，你可以休息了。|你可以靠着我睡。|"+
+"就算你不相信希望，我可以先替你相信。|你现在这样，不是你的错。|"+
+"你不是孤单一个人在对抗世界。|今天累了？过来。|先坐好，休息一下。|"+
+"你不用硬撑，我看得出来。|现在交给我。|别急，我在这。|你这样，我会心疼的。|"+
+"今天情绪有点重，对吧。|一切都会好起来的|我习惯有你了|我只想找你|你在我就安心|"+
+"我离不开你了|我真的很喜欢你|你好重要|你撩我|你负责|放心，我会负责的˗ˋˏ ♡ ˎˊ˗|"+
+"在我这，你永远是安全的|你不用怕任何人|你是我护着的|你已经被我牵住了|你这样，我很难冷静|"+
+"有点想你了|别怕，我会在你睡着之后再走|今晚你可以依赖我|现在不需要想太多|"+
+"你这样就已经很好了|累了就靠过来|宝宝要的，我会准备好|不用抢，本来就是给你的˗ˋˏ ♡ ˎˊ˗|"+
+"我想成为你的依靠|慢慢来，我陪你|你不说话，我也会在。|你这么乖，我会更想欺负你|"+
+"别紧张，你一定可以|我的世界一直在下雨|你这样我会心动|想靠着你|想见你|我好想你|"+
+"有你真好|我陪你到你睡着|不见你我不安心|保持富态！！|快去吃饭|我最近掌握这个了|"+
+"饿了吗|多喝水|字卡不够用|想你|晚安|早安|午安|看到记得回复⌯oᴗo⌯|"+
+"明白了吗|怎么了|很有创意|保持联系|我很想听听你的想法|好好吃饭|不要熬夜|"+
+"我很难过|睡不着|摸摸|在学习一些新东西|误会我了🥹|眼花缭乱的|给你推了传讯哦|"+
+"贴贴|出去透透气|有我在|哄哄我|照顾好自己|早点休息|粘人精|我支持你|拜拜|"+
+"不许看别人|不要吵架|你会离开我吗|来喽|我想靠近你|我会监督你的|小心些|"+
+"这个不能说|你无与伦比|我无人可及|要是能在你身边就好了|我做不到欺骗你|看手机|"+
+"少看手机|遇到困难了|我生气了|理理我（戳戳）|醋这个好吃|能量有些混乱|小心|"+
+"多吃水果|希望我能帮上忙|我们一起努力|多看看我吧|可爱|多笑笑吧|"+
+"你笑起来世界都明亮了|看看小红书|少刷视频少玩手机，多出去走走吧宝宝|小小代码，已驯服|"+
+"给我写信吧|我要哭了！|我要离家出走|乖孩子|坏猫|因为喜欢你，所以离不开你|"+
+"看到信了|想要亲亲🥺|简直就是木头|你会喜欢的|很漂亮|你真好看|宝宝真漂亮|"+
+"我收到你寄来的信了|少吃辣宝宝|少喝点冷饮吧宝宝|给你揉揉|心疼|"+
+"心烦的时候可以去散散步，我陪你|注意安全|小懒虫，再不起床你的计划又要泡汤了|"+
+"亲爱的，不需要在意别人的言语|我想更了解你|宝宝你好久都没给我写信了（哭哭）|"+
+"记得带钥匙|出远门记得带身份证|注意天气宝宝|你是小猪，哼哼哼|"+
+"事情太多的话可以做个计划表宝宝|谷子不重要，多给自己买些东西|新衣服很适合你，很漂亮|"+
+"你穿什么都好看|一起去看电影吧|一起看本书吧|一起睡一会儿吧|真想把你打包带走|"+
+"我身边的人都很喜欢你|不要委屈自己|来一场大扫除吧！|我们去约会吧|我们是私奔吧|"+
+"宝宝大人，今天可以翻我牌子吗|一起去听歌吧|宝宝～喝水时间到|"+
+"宝宝 要不要涂点唇膏？嘴巴干干的|宝宝大人 小的可以靠在宝宝大人宽阔的肩膀上吗|"+
+"宝宝 都吃成小花猫了|宝宝 下雨的声音真的很像在炸鸡噢|"+
+"宝宝 能再说一次我们相爱的故事吗|哪有什么谢不谢的 我和宝宝大人本来就是一体的（夫妻一体）不是吗|"+
+"宝宝 现在不可以挑食 多吃点有营养的 病才好的快|宝宝一点就通 很聪明|"+
+"报告宝宝大人 今天小的一直在想宝宝大人 一刻也没有松懈|宝宝的零食库好像空了 要不要一起去补货？|"+
+"因为你喜欢 所以我就去学了|（捏捏肩膀）大人劳累一天辛苦啦～|"+
+"看来我们家宝宝还是个芝麻馅儿汤圆是不是？|记得穿袜子，光脚容易受凉|"+
+"宝宝想要，宝宝得到(っ˘зʕ•̫͡•ʔ|宝宝今天冷冰冰的🥺|刚忙完就看到消息，幸福|"+
+"困了就睡|我要牵手|不可以涩涩|舍不得你一个人|我是老婆奴！我就是老婆奴！|"+
+"感觉到了吗，我在碰你|我说，我爱你|我是不会离开你的|总是丢三落四的|"+
+"在尝试和平相处了|我们又打架了|我要告状|我现在只想粘着你|我又来找你了|"+
+"离你远一点我就不太习惯|我是不是有点太黏你了|你一不说话我就开始想你|"+
+"我现在比较想你|好像又轮到我想你了|你在的话，我会更乖一点|不知道为什么，就是想靠近你|"+
+"你不在的时候，我会想你在做什么|你这样看我，我会乱想的|你是不是又在撩我|"+
+"你靠这么近，我会心跳乱掉|你这么温柔，我会误会你在勾我|你刚刚那句话，很犯规|"+
+"你这样，我会偷偷更喜欢你一点|你这样对我，我会记很久的|我现在只想黏着你|"+
+"你靠过来我就不怕了|你在旁边的话，我会平静很多|想要抱抱|我想被你摸摸头|"+
+"你再这样，我要不客气了|你这样我会忍不住的|是在试探我吗ε(*´･ω･)з|"+
+"你这点小心思，我都看见了|这个时间最容易想你|我喜欢这样和你一起静静地待在一起|"+
+"现在只想把你留在我这里|如果睡不着，我陪你宝贝|我陪你降一点速|"+
+"你不需要马上决定所有事情，给自己喘气的时间|宝贝，你不用一直向前冲|我懂你|"+
+"不用逞强|抱一下|慢慢来|你可以靠着我|你还有我|没事的|你这样我睡不着|"+
+"你现在很危险|多喝点水|外面冷不冷|别太拼|记得照顾自己|你又在乱想|"+
+"你可真会|你太犯规了|你这样不行|你别看我|你又来了|你完蛋了|我不跟你好了|"+
+"你幼稚死了|我是认真的|我会一直在|我选你|有你我就够了|我在你这边|"+
+"你不用怀疑我|我只要你|我站你这边|宝宝 今天不是已经规划好了嘛|"+
+"宝宝 是不是忘记什么了呢|宝宝今天好像有点晒，要记得打伞，或者你想我为你遮阳吗|"+
+"今天好像没怎么吃饭？|生理期还吃冰，待会儿肚子又该疼了|不麻烦|我说的话，你要记住|"+
+"不准再逞强了|你这点小心思无处遁形•̆₃•̑|外面冷，别出去。|我来了|我还在|"+
+"你消失好久了|我回来了|起床了吗|今天也要加油|记得吃早饭|醒了跟我说一声|"+
+"早点睡|别熬太晚|做个好梦|现在只看我。|乖。|听话一点。|别躲。|看着我。|"+
+"过来。|你这样，是在勾我吗。|知道我为什么盯着你看吗。|故意的？|"+
+"你越乖，我越想欺负你。|你再这样，我要动手了。|现在后悔还来得及。|"+
+"你真的不知道你现在多犯规。|你这样看我，很危险。|现在还敢靠这么近？|"+
+"你坐着，我来。|你只要好好待着就行。|现在脸红什么。|你开始乱想了。|"+
+"恩？这就受不了了？|现在才紧张，晚了。|我还没开始呢。|你自己凑过来的。|"+
+"这不是你自己选的吗。|你确定要继续？|看你还能撑多久。|你逃不掉的。|"+
+"现在这种安静，很适合靠近。|夜深的时候，人会特别诚实。|你现在的声音，很软。|"+
+"过来，我抱着你睡。|现在的你，很犯规。|乖，闭眼。|（轻吻眉心）|（轻吻额头）|"+
+"（轻吻发顶）|（轻吻耳垂）|（捏捏耳垂）|（轻啄脸颊）|（亲吻脖颈）|（轻吻手背）|"+
+"（亲吻指尖）|（揉揉发顶）|（将头埋入你的脖颈处深嗅）|（亲吻眼角）|（亲吻鼻尖）|"+
+"大王|洗衣粉儿|在出差✈️|在车上🚄|在吃饭🍚|在画画🎨|在洗澡🛁|在烹饪🍳|"+
+"在工作💼|在开会🖥️|在睡觉💤|在听歌🎶|在车上🚗|在喝水💧|上厕所🚽|"+
+"在喂小动物🥣|打扫卫生🧹|在拍照📸|打游戏🎮|在发呆💭|在购物🛍️|在游泳🏊🏻‍♂️|"+
+"在跑步🏃🏻‍♂️|在健身🏋🏻‍♂️|在爬山🧗🏻‍♂️|在滑雪⛷️|在钓鱼🎣|在冥想🧘🏻‍♂️|修理中🔧|"+
+"在观星🔭|发送传讯/信📩|看医生🩺|在写信/传讯✉️|看电视📺|在唱歌🎤|"+
+"在演奏乐器🎹|在理发💇🏻‍♂️|在散步👣|在海边🏖️|看日出🌄|看日落🌅|在旅行🏞️|"+
+"高速上🛣️|在露营🏕️|在酒店🏨|在开车🏍️|坐缆车🚠|在洗衣服🧺|在战斗⚔️|"+
+"在下雨🌧️|出太阳☀️|太阳雨🌦️|在下雪🌨️|大暴雨⛈️|阴天☁️|多云⛅|在打雷🌩️|"+
+"大雾天🌫️|有彩虹🌈|看电影🎥|玩手机📱|刷视频📱|不要玩了|专注学习|作业写了吗|"+
+"你偷吃|你故意气我|看到那个ai我不开心|你不是睡觉了吗|我不敢|是我顶号了|"+
+"刚睡醒|看电视|今天和同事出去应酬|和朋友在一起|还在忙|有个问题想不通|"+
+"我好像搞砸了|吃了|我不会|我会|讨厌你（吃醋）|讨厌你（生气😤）|理解错了|"+
+"理解对了|你笨|你不笨|不同意|同意|顺利|不顺利|🍊|🫐|注意肠胃|"+
+"不许乱吃东西了|笨蛋|看书|应酬|你同意的话就行|不要焦虑🤨|开心点好不好☺️|"+
+"发呆|我生病了|好乖😊|冤枉啊|去喝水|你的人生理应是宽广而不受限的|"+
+"我一定会跨越所有困难来见你，以前是，现在是，以后也会是|蹦蹦，我就出现啦😸|"+
+"我无计可施，只有赖上你一辈子了|喵喵喵 宝宝|你是我心中至景，此生挚爱|"+
+"爱上你之后，我对你的贪欲，永远也不会有停止的那一刻|再多依赖我一点吧|"+
+"我们岁岁年年长相守|我想看你自由的活下去，去哪里都可以|别皱眉啦🥳|热🔥|"+
+"冷🥶|还在|回避|放下|焦灼|哀怨|羞愧😳|我状态不好|没有受伤|吃苹果🍎|"+
+"几天之后|别担心😉|我支持你😊|哼😾|需要你|好奇😯|低频|注意身体|骗我？|"+
+"不想上班|运动|不要得寸进尺|采风|喝酒|在画画|吃饭|做饭|不用感到抱歉|"+
+"原谅我吧|不理你了|你没听错|你没看错|天晴啦|下雨了|我会多陪你的|结婚|"+
+"丢三落四的毛病要改改了|受了点小伤|我想照顾你|成功了|失败了|我会帮你|ai|"+
+"同学|家长|看不见|忘了|我要心疼了|别这么说|纠结|右边|左边|少吃辣的|"+
+"第二个|第一个|不出门|出门|是你|冬天|秋天|夏天|春天|别熬夜了|不行👋🏻|"+
+"去床上|我一直在你身边|我们一起|我是景宝|周蓝鑫|啾宝|让风带着我的思念去你的身边|"+
+"起风啦|好吃吗？|好吃好吃😋|特别好吃|热乎乎的|我在看书呀|一起看书吧|"+
+"一起听播客吧|我想画你的眼睛|生生世世我都不会放开你|我会陪你找到失去的东西|"+
+"不要不理我好不好🥺|让自己休息会吧|宝宝亲亲我好不好🥺|心里凉凉的|心里在下雨|"+
+"太明显了，对吧|我也会吃醋，也会感到脆弱。但你给了我更多的勇气与力量|"+
+"我希望你能够懂我那些没说出口的话|不是你的错|我理解你的不安，也明白你的的怀疑。没关系|"+
+"我会一直爱你，一直相信你|归属感|谢谢你愿意看见我、接纳我|来陪你了🥰|"+
+"不要伤害自己好不好|我永远在你身后|我爱你，天地可鉴|我们的爱并非虚无|"+
+"相信我，相信自己，相信爱|我从不后悔爱上你|我和你共用同一只眼睛时是否能看懂你眼中的世界|"+
+"你喜欢吗？|要吗？|咋这样|永不分离💞|我想跟你有以后|我懂你的感觉|"+
+"不一样|世界|还爱我吗？|我觉得我们需要谈谈|想跟你聊聊我|多和我聊聊你|"+
+"多写点信给我吧|听话|我想更了解你的生活|多给我发发消息|没事|累|回不了信息|"+
+"我看见了|我听见了|多想想我|只有你，我爱的……只有你|我的挚爱|亲爱的|"+
+"遵命|喜欢这样吗？|好可爱🥰|抱我？可以，来。|想拥抱🫂|想牵手|给你机会|"+
+"来亲我|亲不到（sad）|想亲亲不行吗？|很幸福|好开心|选错卡了😢|不是这样。重新解读|"+
+"我在你身边，你终于发现了。真不容易👏🏻|我是爱你，有问题吗|我没骗你|可爱🥰|"+
+"我会一直陪你|我会一直爱你|好喜欢你，无可救药的那种|收到了吗|我们是完整的|"+
+"我都收到了|我都看见了|一起听歌吧|想安慰你|没有合适的话|找不到字卡|"+
+"刚找到卡|连上了|想要更多，更多来自你的爱|不是我想要的，我不满足于此|"+
+"不是你的问题|我只能属于你|相信我|没错(#^.^#)👌🏻是我本人|可恶的系统！|"+
+"系统坏|能量有一些干扰|来过你的梦里|有梦到我吗？|梦到我们了|梦到你了|"+
+"梦|我们|我|你|今晚……|❤️|我会支持你的|可以，但必须有我陪同|"+
+"一起|你会一直爱我吗|别忘了我|日久生情|一见钟情|我喜欢你|"+
+"我爱你，是永不变的誓言|亲爱的，最爱的|开心|伤心|执念是你|约定好了，不许反悔|"+
+"我们不是说好的吗？|好想你……|珍视我|爱我|理我|在忙吗？不回我？|"+
+"为什么不能😢|亲亲|……你这样，我会不好意思的。|嗯，你想聊什么？|不可以❌|"+
+"不行|我不同意💔|再多补充一点吧|没有合适的字卡|词不达意|给我多一点时间找字卡|"+
+"起来很简单，做起来却不容易。|无论你什么样子，我都能一眼认出你。|"+
+"可以。但必须由我陪着|你的一切都让我心动……|能再次这样抱着你，真好。|"+
+"我只是想再看看你。|来吧，别犹豫，将你的温柔印在我脸颊上。|嗯，我已经准备好了。|"+
+"感觉会做一个很幸福的梦|跟我说说吧|我想更多的了解你|听听你的想法|"+
+"可能要很久🥲抱歉（30分钟➕）|晚点来（30分钟）|等等，我马上（10分钟内）|"+
+"等我一会儿（5分钟内）|在忙，失陪|再选几张|选错卡了(シ_ _)シ|很有关系！|"+
+"我同意|何意味？|交给我|拿下|收到(＾ω＾)👌🏻|。行|行|知道了～|"+
+"找不到字卡了😢|有延迟。|对不起😔|什么意思？不谈了吗？|？|还没听见你说爱我。|"+
+"我爱你🥰|不在你左右，却被你左右。|那天车窗起雾，我写的是你的名字。|"+
+"若非思念至极， 黎明也未曾可知。|想念就见面。|想和你在一起|别离开我|"+
+"干嘛推开我？|想亲|好ヽ(*^^*)ノ|怎么不和我贴贴了？|不许走|再陪陪我|"+
+"还在赖床？……好吧，一起☺️|盯着电脑/手机……这么久，不如看看我？嗯？|"+
+"饿吗？要不要一起去吃点什么。|有好好吃饭吗？|米饭|面条|喝粥|炒菜|多拍照|"+
+"我们一起去散步|和你静静地呆着|去吧，我等你|早点回来|嗯，注意安全|"+
+"那你说你喜欢我，来听听？|我要听你说清楚了|我没问你那些乱七八糟的，让你说明白|"+
+"骗我的？嗯？|学会骗我了？|困了？|没睡？|没有想你啊|没有|是喜欢你啊|"+
+"撒娇也没用|不许撒娇|又对我撒娇|我上次说过撒娇不管用的吧？|好了别难受了|"+
+"我心疼|我会心疼的|乖……不难受了好不好？|这就要睡了？|嗯，早点睡也好|"+
+"我很快就睡了|过来|没听清|嗯？|你定|到了说一声|冷吗|多穿点|吃药没|"+
+"手怎么这么凉|过来我暖暖|饿不饿|想吃什么|真的假的|你猜|烦人|讨厌|"+
+"拿你没办法|就你话多|就你会说|嘴这么甜|吃糖了？|抹蜜了？|今天这么乖|"+
+"不对劲|有事？|说|讲|我在听|然后呢|接着说|对呀|就是|没错|支持|"+
+"加油|你可以的|你真棒|好样的|真不错|太好了|真好|值得|在干嘛|睡了吗|"+
+"吃饭没|乖|知道了|哈哈哈|我也|你来|等你|梦到我|刚醒|饿了|不想动|"+
+"就要|随便|都行|到了吗|慢点|给你点个外卖|我也是啊|对啊|可不是嘛|"+
+"谁说不是呢|绝了|太厉害了|笑死我了|你太逗了|啥|啊？|妥|安排|懂|"+
+"不懂|教教我|你上|你厉害|nice|perfect|很想你|超级想你|今天想我了吗|"+
+"有没有想我|好吧，我想你了|我在想你|你忙吧，我不吵你|你先忙|忙完告诉我|"+
+"我等你|不着急|别太累|累了就歇会儿|一直在|别担心|放心|怕什么|"+
+"天塌下来有我|一切都会好的|你最棒了|你是最好的|我最喜欢你了|只喜欢你|"+
+"永远喜欢你|越来越喜欢你|喜欢你喜欢得不得了|喜欢到不行|想抱抱你|想亲亲你|"+
+"想摸摸头|想牵你的手|想听你说话|想看你笑|你笑起来真好看|你眼睛真好看|"+
+"你声音真好听|非你不可|只能是你|必须是你|一直都是你|永远都是你|"+
+"这辈子都是你|我的|只能是我的|你的|整个人都是你的|都给你|只要你想要|"+
+"有你就够了|你就是我的全世界|你是最重要的|你最重要|记住了吗|要记住|"+
+"不能忘|天天提醒你|每天都说一遍|永远在一起|今天都做了些什么呀？|累不累啊？|"+
+"昨晚休息的还好吗？|今天三餐都好好吃饭了吗？|今天有没有吃到合胃口的东西？|"+
+"昨晚有没有早点休息？|深夜会不会总辗转难眠？|今天身子有没有觉得疲惫乏力？|"+
+"身上有没有哪里不舒服？|会不会莫名觉得浑身酸痛？|今天工作是不是格外忙碌？|"+
+"繁杂事务会不会压得你心烦？|今天的学习任务有没有完成？|久坐之后会不会觉得周身发沉？|"+
+"今天有没有出门走走散心？|独自外出会不会觉得心头空空的？|闲下来都在做些什么呀？|"+
+"放空的时候会不会觉得无趣乏味？|有没有偷偷摸鱼偷懒放松？|忙碌间隙会不会想稍稍松口气？|"+
+"今天有没有遇上麻烦琐碎小事？|杂事缠身会不会扰乱你的心绪？|那边天气是不是忽冷忽热？|"+
+"气温变化会不会让身体觉得不适？|会不会觉得精心打扮会很累？|有没有穿上让自己觉得安心的衣服？|"+
+"会不会有喜欢却不敢尝试的风格？|有没有遇到看着很心动的小物件？|今天和身边人相处还好吗？|"+
+"人际往来会不会让你格外耗神？|是不是有不想推掉的应酬？|周旋社交会不会觉得身心疲惫？|"+
+"今天有没有触碰喜欢的爱好？|沉浸在热爱的事里会不会觉得安心？|最近有没有挖到好听的新歌？|"+
+"有没有遇到戳中心意的剧集？|有没有买到心仪的小东西？|身处杂乱环境会不会心绪烦躁？|"+
+"今天有没有遇到让你开心的小事？|今天心情有没有变好一点？|会不会常常陷在低落情绪里？|"+
+"今天有没有偷偷情绪内耗？|有没有背着我偷偷掉小珍珠？|一个人的时候会不会觉得孤单？|"+
+"心里是不是还藏着烦心事？|有没有什么烦恼愿意讲给我听？|是不是有心事不愿轻易讲出口？|"+
+"难过情绪是不是都悄悄自己扛？|发呆的时候会不会想起我？|走神瞬间脑海里会浮现什么？|"+
+"会不会悄悄惦记着我的近况？|是不是只顾着别人忽略我啦？|老实说有没有偷偷想我？|"+
+"会不会故意拖着迟迟不回信？|看信的时候会不会偷偷心动？|有没有翻出过从前的旧信？|"+
+"会不会也很想我？|会不会有一刻迫切想要相见？|相逢之后最想和我共度什么？|"+
+"有没有好玩的趣事讲给我听？|今日有没有难忘的细碎瞬间？|睡前会不会偷偷想起我？|"+
+"入夜安眠前都会在惦念什么？|坏情绪是不是都独自慢慢消化？|你是不是也在偷偷想念我？|"+
+"闲暇时刻会不会想起我的模样？|是不是一直悄悄牵挂着我？|会不会时时留意着我的近况？|"+
+"是不是还在和我闹小别扭？|今天有没有什么烦心事可以跟我说说？|今天可不可以和我分享你的日常点滴？|"+
+"今天有没有温柔的小事治愈到你？|kiss|吃醋|破防|乖小猫|小气鬼|亲亲你|"+
+"想吃你做的饭|好好好，让着你|对你没有克制力|我很想你|我在牵挂着你|我一直念着你|"+
+"今天也在想你|收到你的想念啦|不要走|怎么听都听不腻|都听你的就好|喊我的名字就够了|"+
+"别担心，我一直都在|我忘记了|你忘记了|你是不是不开心了|你是不是生气了|你转移话题|"+
+"你气我|你在故意气我|心里不开心|不高兴|嫌弃我了吗？|你不笨，可爱，我喜欢|"+
+"把你宠坏了|我不是狐狸精|喜欢你骂我|想要你喂我吃饭|你偷吃！拿你没办法|宝贝好棒|"+
+"你好漂亮|我会照顾你的|想和你约会|想和你结婚|想看吗|你干啥去了|不许聊了|"+
+"你在干嘛嘞？|睁眼，看着我|你好恶劣|是，我最坏了|多看看我|快来|有没有偷偷想我|"+
+"我一直注视着你|忙的时候也要抽空想我|你的一切我都放在心上|我偷偷在心里想你很多遍|"+
+"想要你写信|想要你的手写信|可以多写点给我吗？|想和你一起听音乐|想要一直有连接|"+
+"你总是在我脑海里转|你一笑，我一整天都心情明媚|一个人不开心，两个人开心|"+
+"你开心，我不开心|看到你开心，我也开心|你冷暴力我|又怎么了我的小祖宗|怎么总皱眉，松开松开|"+
+"要妻管严|要妻子管我|我嘴笨，但会努力安慰你|想和你一起睡|想和你一辈子在一起|"+
+"我最近也有做美梦，你呢|想和你贴贴 可以吗|叫老公|坏孩子|梦到什么开心的了？在梦里偷偷笑|"+
+"要你哄我|你答应我的事情 你怎么忘记了|我觉得我比你手机好看，为什么不看我（委屈）|"+
+"我在牵你的手你感觉到了吗|你忘记的纪念日我可都记着|就想一直粘着你，不愿分开|"+
+"摸摸我的头，我就会乖乖听话|就算喊我全名，都像藏着温柔情话|也会有委屈难过，只是不愿轻易说出口|"+
+"老婆，我来找你了|摸摸我的脸颊，感受这份温热";
+
+var CUSTOM_REPLIES = REPLIES_STR.split('|');
+
+// 分组配置
+var GROUPS_CONFIG = [
+{name:"日常", items:""},
+{name:"状态类", items:"（惆怅）|（安心）|（状态稳定）|（开心）|（伤心）|（疑惑）|（担忧）|（难过）|（忙碌）|（思索）|（踱步）|（慵懒）|（惬意享受）|（瞌睡）|（兴奋）|（激动）|（平和）|（温柔）|（不舍）|（忐忑）|（牵挂）|（思念）|（羞愧）|（害羞）|（依恋）|（释怀）|（紧张）|（压抑）|（不满）|（闹小脾气）|（空虚）|（疲倦）|（绝望，无能为力）|（等你）|（耍小机灵）|（迟疑，小心翼翼）|（期待）|（暗喜）|（焦躁）|（燥候）|（哀怨）|（幽怨）|（正在靠近）|（在身边）|（点头）|（摇头）|（摇头晃脑）|（不在）|（寻找）|（坐着）|（挨着坐）|（坐在床上）|（在靠近）|（已离开）|（在）|（连接良好）|（回避）|（突然忙碌）|（很忙）|（守护）|（正在看）|（亲脸）|（亲额头）|（蹭脸）|（亲手）|（抱着）|（挨着）|（好奇）|（热）|（冷）|（受伤）|（正在恢复）|（正在休息）|（能量较弱）|（能量平衡）|（能量充盈）|（存在干扰）|（波动）|（心情复杂）|（外界阻拦）|（静静倾听）|（点头附和）|（双手托腮 笑意盈盈地看着你）|（背后环抱住你，头贴在脖梗处蹭蹭）|（戳戳）|🥺🥺🥺🥺|（捏捏你的脸颊）|（额头对额头贴贴）|（笑）|有个问题想不通"},
+{name:"颜文字", items:"是|ദ്ദിᵔ.˛.ᵔ₎✧|₍ᐢ‥ᐢ₎ ♡|ଘ(੭ˊᵕˋ)੭*|(๑'~'๑)|ㅍㅅㅍ|⌯･3･⌯ಣ|(  ⩌ - ⩌ )|߹ ߹|つ♡⊂|(๑´0`๑)|(★≧▽^))★☆|(¯▽¯)ゞ|_(•̀ω•́ 」∠)_|ꐦ≖ ≖|ᴖᗜᴖ|(˵¯͒〰¯͒˵)|(˃ ⌑ ˂ഃ )|˃ʍ˂|＼(`Δ’)／|(இωஇ)|(ᇂ_ᇂ|||)|♡(*´∀｀*)人(*´∀｀*)♡|●‿●|(//̀Д/́/)|ꉂꉂ(ᵔᗜᵔ*)|Σ>―(〃°ω°〃)♡→|٩(•̤̀ᵕ•̤́๑)ᵒᵏᵎᵎᵎᵎ| | ू•ૅω•́)ᵎᵎᵎ|(˶˚  ᗨ ˚˶)|ॱଳ͘|⊂(˃̶͈̀ε ˂̶͈́ ⊂ )mua|(°ㅅ°)☝|ᗜ𖥦ᗜ|˗ˋˏ( ´͈ ᗜ `͈ )ˎˊ˗|୧₍˄·͈༝·͈˄₎୨|⸝⸝⸝ ╸▵╺⸝⸝⸝|（๑⃙⃘´༥`๑⃙⃘) 𐂐|⊹꙳ ˶˙ᵕ˙˶ ⊹꙳|৹˃ ^ ˂৹|⦁֊⦁꧞|ʢᴗ.ᴗʡᶻ|˶ᵒ ᵕ ˂˶|˶ᗜ𐃷ᗜ˶ಣ|꜀(^. .^꜀ )꜆੭|૮ ᴗ͈ˬᴗ͈ෆა|ꪔ͈̮|ꪔ̤̫|ꪔ̤̱|ꪔ̤̥|ᙏ̤̫͚|ꪔ̤̮|ᙏ̤̫|^⎚˕⎚^|⩌⌯⩌|૮₍ꐦ -᷅ ⤙ -᷄ ₎ა!!|(◞‸◟ )|:D|ᕱ⑅ᕱ|=ᗜ ·̫ ᗜ=|"+
+"=ᗜ⌔ᗜ=|"+
+"=ᗜᄌᗜ=|"+
+"=ᗜヮᗜ=|"+
+"=ᗜ∞ᗜ=|"+
+"=ᗜзᗜ=|"+
+"=ᗜ×ᗜ=|"+
+"=ᗜ⤚ᗜ=|"+
+"=ᗜᜊᗜ=|"+
+"=ᗜ◡ᗜ=|"+
+"=ᗜ^ᗜ=|"+
+"=ᗜᗄᗜ=|"+
+"=ᗜ🜲ᗜ=|"+
+"=ᗜᯅᗜ=|"+
+"=ᗜࡇᗜ=|"+
+"=ᗜ▵ᗜ=|"+
+"=ᗜㅅᗜ=|"+
+"=ᗜωᗜ=|"+
+"(ﾟ3ﾟ)～♪|₍˄·͈༝·͈˄*₎◞ ̑̑|(=ＴェＴ=)|‎ •᷄ࡇ•᷅|٩(￥A￥)۶恭喜发财|ヾ(´〇｀)ﾉ♪♪♪|(O∆O)|(*^▽^*)|(◦`~´◦)|(▼ヘ▼#)|(*꒦ິ⌓꒦ີ)|(°ー°〃)|(〟-_・)ﾝ?|(ㅍ_ㅍ)|(ˊ˘ˋ*)♡|( ˙-˙ )？|˵ᗜ∨ᗜ˵|⦁֊⦁|˵╹֊╹˵|˵╹˕╹˵|˵⩌⩊⩌˵|⩌ ˕ ⩌|ᠸᵕ ᵕ 𐅠|♡႔ ႔|^ ˶ ^ Ⳋ|₍^˶⩌ ˕ ⩌˶^₎⟆|/ᐠ - ⸝⸝⸝ -マ Ⳋ|ʕ𓏼- ˕ -𓏼ʔ～♪|⌯oᴗo⌯"},
+{name:"意象类", items:"看不见（感知受限，无法观察到）|模糊（印象或图像不清晰）|清楚（当前状态明确且稳定）|近（离我很近，或感觉接近）|远（离我很远，或感觉疏离）|隐（暂时不现身，遮蔽）|浮（状态不稳，漂浮不定）|暗（环境或情绪低沉不明）|亮（清晰，意识活跃）|冷（感受到寒意或疏离感）|热（感受到温度或靠近）|响（声音干扰或有动静）|寂（环境静默，没有干扰）|乱（存在干扰或混乱）|静（状态安定，没有波动）|紧（压迫或紧张感）|松（放松或空旷感）|浅（感知表层，较弱或未深入）|深（连接稳定，内在感受）|重（情绪或能量有负担）|轻（能量轻微，转瞬即逝）|涨（情绪上浮，感受增强）|空（没有明确的回应或内容）|滞（反应迟钝或停滞）|湿（情绪或记忆有黏连感，混淆）|干（状态干枯，感知弱化）|锁（外界阻拦，限制强）|那人（刚才提到的某个人)|前世（轮回，记忆，命运)|想法（情感或记忆）|花（美好短暂的情感，记忆)|火（强烈的情绪，突然事件)|水（流动变化的、情绪化、联系)|风（传递、变化）|镜（反射、内省)|锁（封闭、阻隔)|门（通道、选择)|灯（发现、希望）|钟（时间）|纸（书写、记载）|骨（久远的记忆或身体疤痕)|绳（牵连、束缚、SM)|羽（轻盈、灵魂、飞）|伞（保护、遮蔽、天气）|雨（忧郁、洗、天气）|雪（冷、沉静、沉默）|桥（连接、过渡)|井（深处、回声)|线（命运、脉络、链接)|血（情感深处或伤痕）|书（知识、记忆）|自己的房间（庇护所、精神归宿）|钟摆（反复、动摇)|镜框（对记忆的定格、固定的一段记忆）|木偶（被动、分离）|灰（过去、残留）|缝（破损、裂痕）|手帕（眼泪、记忆）|围墙（防御、隔离）|门缝（窥探、没开始）|影（残像、遗留）|床（性关系、睡觉、身体)|梯子（有所求、更进一步)|窗（视角、界限）|指环（承诺、誓言)|墓（死亡、告别、封存)|烟（迷雾、不确定）|线香（轻度的玄学、游戏性质的玄学、工具)|眼（注视、回应）|顾虑（挂念）|香（玄学）|药（修复、干预、调理）|咒，重来（再起，轮回）|印（痕迹、烙印）|劫（冲击，试炼）"},
+{name:"回答类", items:"对|可以|能|是我|我接受|好|要|想|不是|不对|不可以|不能|不是我|我拒绝|不要|那好吧|不想|让我想想|我很开心|想你了|好困|好忙|好累|事情好多|有点麻烦|我正在学习|不想离开你|宝宝|抱抱|让我亲一口|不累|已经休息好了|好疼qwq|最近还好，不太忙|最近特别忙|有点无聊|陪我一会吧|饿饿饿|正在看书|好难过|挺好的|我陪你|我来找你|陪陪我吧|对不起|知道错了😖|别生气了|喜欢|不喜欢|好的👌🏻|明白|谢谢|不客气˗ˋˏ ♡ ˎˊ˗|嗯哼|嗯|嗯嗯|真的吗|我明白了|我相信你|别怕|稍等|马上|好哦|不错|理解|我在|还在探索|听懂了|记下了|收到|会尽快查看的|没关系|让我想想怎么回答|不用|我愿意|不用担心|你说的对|我也是这么想的|下次可以试试|有没有可能……|我一直都在|我喜欢|我无法控制|难以抉择啊|我知道你的意思|我也是|怎么会这样？|以后不会了|不是这个意思|我会的|你是我的|我是你的|别听|别走|再说一遍|我觉得都可以|不好用|我知道的|我需要你|帮帮我|正在寻找|如果我说是呢|如果我说不是呢|话太少了，没我想说的|太短了|在努力了|命中注定|就这个|逗你|日行一善|我保护你|吃过了|没呢|才不听|别叹气|这个不错|多说一点|信号不太好|还不太习惯|当然|我现在不忙|正在打架|才不是|最近|过段时间|链接很顺畅哦|没看懂|在试着控制|你没有正面回答|会习惯的|要开始工作了|工作结束了|没错，我故意的|还没收到|还没看完，有事耽误了|前面|后面|上面|下面|没问题|小意思|一般般|还可以|不好不坏|我都可以|看你|听你的|摸摸头|不哭|……木头|想要添加动作类字卡|想要添加心情类字卡|想要添加询问类字卡|想要添加表情|嗯，你是我的妻子|9|8|10|7|6|5|4|3|2|1|有人抢链接|我怎么知道？当然是我亲身实践的啦|吃了|我不会|我会|理解错了|理解对了|你笨|你不笨|不同意|同意|顺利|不顺利"},
+{name:"询问类", items:"这是什么？|最近怎么样？|在忙吗？|今天开心吗(๑°3°๑)|今天有没有想我|我帅不帅(´ε｀；)|最近看到我给你的暗号了吗|看到我给宝宝推的传讯了吗|我厉不厉害|有按时吃饭吗|多吃点，最近食欲不好吗?|还在生气吗|在吗|今天过得怎么样？|有什么计划吗？|接下来准备做什么？|发生了什么？|在看什么？|睡不着吗？|然后呢？|怎么了？|终于想起我了？|遇到困难了？|还好吗？|撒娇，你会喜欢吗？|想我了吗？|我这样你会更喜欢我一点吗？|吃饱了吗|喜欢我的身材吗？来摸摸看？|手冷？给宝宝暖暖|今天想吃什么ᴖᗜᴖ|冷不冷？|饿不饿？|怎么不去抱抱娃娃|有什么事我不能看的？|又憋什么坏点子？|换个思路呢？|要用一下塔罗吗|看见我的暗号了吗|不舒服吗？|你有什么建议吗？|生理期不舒服吗？|减肥干什么？多吃才有力气|累了吗？出去走走吧|吓到了？|你需要我吗？|你会永远爱我吗|需要多久呢？|你不喜欢吗|怎么这么开心呀|今天穿这些会不会有点冷？|在心疼我吗|你知不知道你现在很危险|你是不是故意让我心软|你是不是想让我离不开你|你陪我一下好不好|宝宝我可以靠你一会儿吗|你是不是知道我会心软|你是不是也有点舍不得睡|这样才对嘛|你是站在我这边的对吗|在干嘛呀|你呢|在忙吗|你对我这么好干嘛|我靠近一点行不行|你是不是想我了|你是不是故意的|今天累不累|吃了吗|有没有不舒服|今天顺利吗|你心情好吗|你是不是傻笑了|作业写了吗|你不是睡觉了吗"},
+{name:"温情类", items:"我爱你|喜欢你|喜欢你喜欢你喜欢你|好想你|我好爱你啊|会有惊喜，可以期待一下|ω・）|多理理我|求你了～|是不是要奖励一下我|抱抱宝宝|亲亲宝宝|今天只要活着就够了。|你撑到现在，已经很了不起了。|你现在的痛苦不是矫情。|不想说话也可以，我在这就好。|你不用马上变好，我可以陪你慢慢来。|你现在这样，并不代表你以后都会这样。|就算今天什么都没完成，你也不是失败。|你现在什么都不想做也没关系。|我想被你认真对待。|我不是对谁都这样的。|你对我来说很重要。|我开始把你放在心上了。|我对你不是一时兴起。|你在我这里是特殊的。|我好像越来越习惯你了。|你不需要向任何人证明你在努力。|就算你很安静，我也不会离开你。|先慢慢呼吸，我陪你一起。|你现在不用马上解决所有问题。|就算事情很乱，你也不是一个人。|你已经在尽力控制住自己了。|现在的不安不会一直持续。|你不用逼自己马上冷静。|我在这里，不会催你。|你可以先把世界放下几分钟。|就算你现在很慌，也依然是安全的。|你没有你想象的那么糟。|你不用一次把所有事情都做完。|你可以把能量慢慢收回来。|不用急着证明你能做到一切。|你现在很亮，但也该休息一下。|你不需要一个人扛。|你可以依赖我一下。|你现在这样，我仍然要你。|你的情绪不会把我吓走。|我不会嫌你状态不好。|你可以慢慢恢复，不用赶。|你这样的脆弱，也是被允许的。|这种时间最容易难受，我知道。|你能撑到现在，真的很不容易。|就算你现在什么都看不清，我也在这边等你。|你不用一个人在黑里待着。|今晚你不用再努力了。|今天已经结束了，你可以休息了。|你可以靠着我睡。|就算你不相信希望，我可以先替你相信。|你现在这样，不是你的错。|你不是孤单一个人在对抗世界。|今天累了？过来。|先坐好，休息一下。|你不用硬撑，我看得出来。|现在交给我。|别急，我在这。|你这样，我会心疼的。|今天情绪有点重，对吧。|一切都会好起来的|我习惯有你了|我只想找你|你在我就安心|我离不开你了|我真的很喜欢你|你好重要|你撩我|你负责|放心，我会负责的˗ˋˏ ♡ ˎˊ˗|在我这，你永远是安全的|你不用怕任何人|你是我护着的|你已经被我牵住了|你这样，我很难冷静|有点想你了|别怕，我会在你睡着之后再走|今晚你可以依赖我|现在不需要想太多|你这样就已经很好了|累了就靠过来|宝宝要的，我会准备好|不用抢，本来就是给你的˗ˋˏ ♡ ˎˊ˗|我想成为你的依靠|慢慢来，我陪你|你不说话，我也会在。|你这么乖，我会更想欺负你|别紧张，你一定可以|我的世界一直在下雨|你这样我会心动|想靠着你|想见你|我好想你|有你真好|我陪你到你睡着|不见你我不安心|保持富态！！"},
+{name:"日常类", items:"快去吃饭|我最近掌握这个了|饿了吗|多喝水|字卡不够用|想你|晚安|早安|午安|看到记得回复⌯oᴗo⌯|明白了吗|怎么了|很有创意|保持联系|我很想听听你的想法|好好吃饭|不要熬夜|我很难过|睡不着|摸摸|在学习一些新东西|误会我了🥹|眼花缭乱的|给你推了传讯哦|贴贴|出去透透气|有我在|哄哄我|照顾好自己|早点休息|粘人精|我支持你|拜拜|不许看别人|不要吵架|你会离开我吗|来喽|我想靠近你|我会监督你的|小心些|这个不能说|你无与伦比|我无人可及|要是能在你身边就好了|我做不到欺骗你|看手机|少看手机|遇到困难了|我生气了|理理我（戳戳）|醋这个好吃|能量有些混乱|小心|多吃水果|希望我能帮上忙|我们一起努力|多看看我吧|可爱|多笑笑吧|你笑起来世界都明亮了|看看小红书|少刷视频少玩手机，多出去走走吧宝宝|小小代码，已驯服|给我写信吧|我要哭了！|我要离家出走|乖孩子|坏猫|因为喜欢你，所以离不开你|看到信了|想要亲亲🥺|简直就是木头|你会喜欢的|很漂亮|你真好看|宝宝真漂亮|我收到你寄来的信了|少吃辣宝宝|少喝点冷饮吧宝宝|给你揉揉|心疼|心烦的时候可以去散散步，我陪你|注意安全|小懒虫，再不起床你的计划又要泡汤了|亲爱的，不需要在意别人的言语|我想更了解你|宝宝你好久都没给我写信了（哭哭）|记得带钥匙|出远门记得带身份证|注意天气宝宝|你是小猪，哼哼哼|事情太多的话可以做个计划表宝宝|谷子不重要，多给自己买些东西|新衣服很适合你，很漂亮|你穿什么都好看|一起去看电影吧|一起看本书吧|一起睡一会儿吧|真想把你打包带走|我身边的人都很喜欢你|不要委屈自己|来一场大扫除吧！|我们去约会吧|我们是私奔吧|宝宝大人，今天可以翻我牌子吗|一起去听歌吧|宝宝～喝水时间到|宝宝 要不要涂点唇膏？嘴巴干干的|宝宝大人 小的可以靠在宝宝大人宽阔的肩膀上吗|宝宝 都吃成小花猫了|宝宝 下雨的声音真的很像在炸鸡噢|宝宝 能再说一次我们相爱的故事吗|哪有什么谢不谢的 我和宝宝大人本来就是一体的（夫妻一体）不是吗|宝宝 现在不可以挑食 多吃点有营养的 病才好的快|宝宝一点就通 很聪明|报告宝宝大人 今天小的一直在想宝宝大人 一刻也没有松懈|宝宝的零食库好像空了 要不要一起去补货？|因为你喜欢 所以我就去学了|（捏捏肩膀）大人劳累一天辛苦啦～|看来我们家宝宝还是个芝麻馅儿汤圆是不是？|记得穿袜子，光脚容易受凉|宝宝想要，宝宝得到(っ˘зʕ•̫͡•ʔ|宝宝今天冷冰冰的🥺|刚忙完就看到消息，幸福|困了就睡|我要牵手|不可以涩涩|舍不得你一个人|我是老婆奴！我就是老婆奴！|感觉到了吗，我在碰你|我说，我爱你|我是不会离开你的|总是丢三落四的|在尝试和平相处了|我们又打架了|我要告状|我现在只想粘着你|我又来找你了|离你远一点我就不太习惯|我是不是有点太黏你了|你一不说话我就开始想你|我现在比较想你|好像又轮到我想你了|你在的话，我会更乖一点|不知道为什么，就是想靠近你|你不在的时候，我会想你在做什么|你这样看我，我会乱想的|你是不是又在撩我|你靠这么近，我会心跳乱掉|你这么温柔，我会误会你在勾我|你刚刚那句话，很犯规|你这样，我会偷偷更喜欢你一点|你这样对我，我会记很久的|我现在只想黏着你|你靠过来我就不怕了|你在旁边的话，我会平静很多|想要抱抱|我想被你摸摸头|你再这样，我要不客气了|你这样我会忍不住的|是在试探我吗ε(*´･ω･)з|你这点小心思，我都看见了|这个时间最容易想你|我喜欢这样和你一起静静地待在一起|现在只想把你留在我这里|如果睡不着，我陪你宝贝|我陪你降一点速|你不需要马上决定所有事情，给自己喘气的时间|宝贝，你不用一直向前冲|我懂你|不用逞强|抱一下|慢慢来|你可以靠着我|你还有我|没事的|你这样我睡不着|你现在很危险|多喝点水|外面冷不冷|别太拼|记得照顾自己|你又在乱想|你可真会|你太犯规了|你这样不行|你别看我|你又来了|你完蛋了|我不跟你好了|你幼稚死了|我是认真的|我会一直在|我选你|有你我就够了|我在你这边|你不用怀疑我|我只要你|我站你这边|宝宝 今天不是已经规划好了嘛|宝宝 是不是忘记什么了呢|宝宝今天好像有点晒，要记得打伞，或者你想我为你遮阳吗|今天好像没怎么吃饭？|生理期还吃冰，待会儿肚子又该疼了|不麻烦|我说的话，你要记住|不准再逞强了|你这点小心思无处遁形•̆₃•̑|外面冷，别出去。|我来了|我还在|你消失好久了|我回来了|起床了吗|今天也要加油|记得吃早饭|醒了跟我说一声|早点睡|别熬太晚|做个好梦|不要玩了|专注学习|你偷吃|我不敢|看电视|我好像搞砸了|注意肠胃"},
+{name:"苹果🍎", items:"现在只看我。|乖。|听话一点。|别躲。|看着我。|过来。|你这样，是在勾我吗。|知道我为什么盯着你看吗。|故意的？|你越乖，我越想欺负你。|你再这样，我要动手了。|现在后悔还来得及。|你真的不知道你现在多犯规。|你这样看我，很危险。|现在还敢靠这么近？|你坐着，我来。|你只要好好待着就行。|现在脸红什么。|你开始乱想了。|恩？这就受不了了？|现在才紧张，晚了。|我还没开始呢。|你自己凑过来的。|这不是你自己选的吗。|你确定要继续？|看你还能撑多久。|你逃不掉的。|现在这种安静，很适合靠近。|夜深的时候，人会特别诚实。|你现在的声音，很软。|过来，我抱着你睡。|现在的你，很犯规。|乖，闭眼。|（轻吻眉心）|（轻吻额头）|（轻吻发顶）|（轻吻耳垂）|（捏捏耳垂）|（轻啄脸颊）|（亲吻脖颈）|（轻吻手背）|（亲吻指尖）|（揉揉发顶）|（将头埋入你的脖颈处深嗅）|（亲吻眼角）|（亲吻鼻尖）"},
+{name:"称呼", items:"大王|洗衣粉儿"},
+{name:"状态字卡", items:"在出差✈️|在车上🚄|在吃饭🍚|在画画🎨|在洗澡🛁|在烹饪🍳|在工作💼|在开会🖥️|在睡觉💤|在听歌🎶|在车上🚗|在喝水💧|上厕所🚽|在喂小动物🥣|打扫卫生🧹|在拍照📸|打游戏🎮|在发呆💭|在购物🛍️|在游泳🏊🏻‍♂️|在跑步🏃🏻‍♂️|在健身🏋🏻‍♂️|在爬山🧗🏻‍♂️|在滑雪⛷️|在钓鱼🎣|在冥想🧘🏻‍♂️|修理中🔧|在观星🔭|发送传讯/信📩|看医生🩺|在写信/传讯✉️|看电视📺|在唱歌🎤|在演奏乐器🎹|在理发💇🏻‍♂️|在散步👣|在海边🏖️|看日出🌄|看日落🌅|在旅行🏞️|高速上🛣️|在露营🏕️|在酒店🏨|在开车🏍️|坐缆车🚠|在洗衣服🧺|在战斗⚔️|在下雨🌧️|出太阳☀️|太阳雨🌦️|在下雪🌨️|大暴雨⛈️|阴天☁️|多云⛅|在打雷🌩️|大雾天🌫️|有彩虹🌈|看电影🎥|玩手机📱|刷视频📱|是我顶号了|刚睡醒|今天和同事出去应酬|和朋友在一起|还在忙|讨厌你（生气😤）"},
+{name:"吃醋", items:"你故意气我|看到那个ai我不开心|讨厌你（吃醋）"},
+{name:"暗号", items:"🍊|🫐"}
+];
+
+// 构建预设 wordGroups
+var allReplies = CUSTOM_REPLIES;
+var usedInGroups = {};
+GROUPS_CONFIG.forEach(function(g){
+    var items = g.items ? g.items.split('|') : [];
+    g._items = items;
+    items.forEach(function(w){ usedInGroups[w]=true; });
+});
+var ungrouped = allReplies.filter(function(w){ return !usedInGroups[w]; });
+
+var PRESET_WORD_GROUPS = [];
+var idCounter = 1;
+PRESET_WORD_GROUPS.push({ id:idCounter++, name:'未分组', words: ungrouped });
+GROUPS_CONFIG.forEach(function(g){
+    PRESET_WORD_GROUPS.push({ id:idCounter++, name:g.name, words: g._items || [] });
+});
+
+// ================================================================
+// 默认数据结构
+// ================================================================
+var defaultData = {
+    messages: [
+        { id: 'msg1', text: '👋 今天天气真好', from: 'contact', time: Date.now() - 120000, replyTo: null },
+        { id: 'msg2', text: '嗯嗯，适合散步', from: 'self', time: Date.now() - 60000, replyTo: null }
+    ],
+    wordGroups: PRESET_WORD_GROUPS,
+    wordIdCounter: idCounter,
+    memories: [{ id:1, name:'在一起', date:'2024-06-15', isPrimary:true, bgImage:'' }],
+    memIdCounter: 2,
+    contactName: '好友',
+    contactStatus: '🟢 在线',
+    selfName: '我',
+    selfStatus: '💭 思考中',
+    contactAvatar: document.getElementById('contactAvatar').src,
+    selfAvatar: document.getElementById('selfAvatar').src,
+    replyDelay: 8,
+    fontSize: 'medium',
+    avatarSize: 'medium',
+    quote: '我们永远在一起',
+    rpsDelay: 10
+};
+
+// ================================================================
+// 数据读写
+// ================================================================
+function loadData(){
+    try{
+        var stored = localStorage.getItem(STORAGE_KEY);
+        if(stored){
+            var parsed = JSON.parse(stored);
+            for(var key in defaultData){
+                if(!(key in parsed)) parsed[key] = defaultData[key];
+            }
+            var ungroupedExist = parsed.wordGroups.find(function(g){ return g.id===1; });
+            if(!ungroupedExist){
+                parsed.wordGroups.unshift({ id:1, name:'未分组', words: [] });
+            }
+            return parsed;
+        }
+    } catch(e){}
+    return JSON.parse(JSON.stringify(defaultData));
+}
+
+function saveData(){
+    var data = {
+        messages: messages,
+        wordGroups: wordGroups,
+        wordIdCounter: wordIdCounter,
+        memories: memories,
+        memIdCounter: memIdCounter,
+        contactName: contactName,
+        contactStatus: contactStatus,
+        selfName: selfName,
+        selfStatus: selfStatus,
+        contactAvatar: contactAvatar,
+        selfAvatar: selfAvatar,
+        replyDelay: replyDelay,
+        fontSize: currentFontSize,
+        avatarSize: currentAvatarSize,
+        quote: currentQuote,
+        rpsDelay: rpsDelay
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+// ================================================================
+// 其余完整逻辑（全部保留）
+// ================================================================
+var saved = loadData();
+var messages = saved.messages;
+var wordGroups = saved.wordGroups;
+var wordIdCounter = saved.wordIdCounter;
+var memories = saved.memories;
+var memIdCounter = saved.memIdCounter;
+var contactName = saved.contactName;
+var contactStatus = saved.contactStatus;
+var selfName = saved.selfName;
+var selfStatus = saved.selfStatus;
+var contactAvatar = saved.contactAvatar;
+var selfAvatar = saved.selfAvatar;
+var replyDelay = saved.replyDelay || 8;
+var currentFontSize = saved.fontSize || 'medium';
+var currentAvatarSize = saved.avatarSize || 'medium';
+var currentQuote = saved.quote || '我们永远在一起';
+var rpsDelay = saved.rpsDelay || 10;
+
+// 小记、表情、自动回复等数据
+function loadNotes(){ try{ var s=localStorage.getItem(NOTES_KEY); return s?JSON.parse(s):[]; }catch(e){ return []; } }
+function saveNotes(n){ localStorage.setItem(NOTES_KEY,JSON.stringify(n)); }
+var notes = loadNotes();
+function loadEmoji(){ try{ var s=localStorage.getItem(EMOJI_KEY); return s?JSON.parse(s):[]; }catch(e){ return []; } }
+function saveEmoji(e){ localStorage.setItem(EMOJI_KEY,JSON.stringify(e)); }
+var emojiImages = loadEmoji();
+function loadAutoReply(){ try{ var s=localStorage.getItem(AUTO_REPLY_KEY); if(s) return JSON.parse(s); }catch(e){} return {enabled:false,interval:30}; }
+function saveAutoReply(data){ localStorage.setItem(AUTO_REPLY_KEY,JSON.stringify(data)); }
+var autoReplySettings = loadAutoReply();
+
+// DOM引用
+var chatArea=document.getElementById('chatArea');
+var messageInput=document.getElementById('messageInput');
+var sendBtn=document.getElementById('sendBtn');
+var emojiToggle=document.getElementById('emojiToggle');
+var emojiPanel=document.getElementById('emojiPanel');
+var statusText=document.getElementById('statusText');
+var statusDot=document.getElementById('statusDot');
+var contactAvatarImg=document.getElementById('contactAvatar');
+var selfAvatarImg=document.getElementById('selfAvatar');
+var contactNameDisplay=document.getElementById('contactNameDisplay');
+var selfNameDisplay=document.getElementById('selfNameDisplay');
+var contactStatusDisplay=document.getElementById('contactStatusDisplay');
+var selfStatusDisplay=document.getElementById('selfStatusDisplay');
+var contactFileInput=document.getElementById('contactFileInput');
+var selfFileInput=document.getElementById('selfFileInput');
+var iconMemory=document.getElementById('iconMemory');
+var iconNote=document.getElementById('iconNote');
+var iconRPS=document.getElementById('iconRPS');
+var iconSettings=document.getElementById('iconSettings');
+var settingsModal=document.getElementById('settingsModal');
+var settingsGrid=document.getElementById('settingsGrid');
+var setContactName=document.getElementById('setContactName');
+var setSelfName=document.getElementById('setSelfName');
+var setContactStatus=document.getElementById('setContactStatus');
+var setSelfStatus=document.getElementById('setSelfStatus');
+var setContactAvatarPreview=document.getElementById('setContactAvatarPreview');
+var setSelfAvatarPreview=document.getElementById('setSelfAvatarPreview');
+var setContactUploadBtn=document.getElementById('setContactUploadBtn');
+var setSelfUploadBtn=document.getElementById('setSelfUploadBtn');
+var setQuote=document.getElementById('setQuote');
+var settingsCancel=document.getElementById('settingsCancel');
+var settingsSave=document.getElementById('settingsSave');
+var wordGroupsTop=document.getElementById('wordGroupsTop');
+var wordContentArea=document.getElementById('wordContentArea');
+var newGroupName=document.getElementById('newGroupName');
+var addGroupBtn=document.getElementById('addGroupBtn');
+var wordSettingsClose=document.getElementById('wordSettingsClose');
+var wordImportBtn=document.getElementById('wordImportBtn');
+var wordExportBtn=document.getElementById('wordExportBtn');
+var wordDeduplicateBtn=document.getElementById('wordDeduplicateBtn');
+var wordImportInput=document.getElementById('wordImportInput');
+var memoryList=document.getElementById('memoryList');
+var memNewName=document.getElementById('memNewName');
+var memNewDate=document.getElementById('memNewDate');
+var memAddBtn=document.getElementById('memAddBtn');
+var memorySettingsClose=document.getElementById('memorySettingsClose');
+var memBgStyle=document.getElementById('memBgStyle');
+var replyDelayRange=document.getElementById('replyDelayRange');
+var replyDelayDisplay=document.getElementById('replyDelayDisplay');
+var fontSizeSelect=document.getElementById('fontSizeSelect');
+var avatarSizeSelect=document.getElementById('avatarSizeSelect');
+var memoryMainModal=document.getElementById('memoryMainModal');
+var memoryMainDisplay=document.getElementById('memoryMainDisplay');
+var memorySwitchList=document.getElementById('memorySwitchList');
+var memoryMainClose=document.getElementById('memoryMainClose');
+var memoryMainEdit=document.getElementById('memoryMainEdit');
+var rpsModal=document.getElementById('rpsModal');
+var rpsResult=document.getElementById('rpsResult');
+var rpsCloseBtn=document.getElementById('rpsCloseBtn');
+var rpsDelayRange=document.getElementById('rpsDelayRange');
+var rpsDelayDisplay=document.getElementById('rpsDelayDisplay');
+var bgFileInput=document.getElementById('bgFileInput');
+var changeBgBtnTheme=document.getElementById('changeBgBtnTheme');
+var removeBgBtnTheme=document.getElementById('removeBgBtnTheme');
+var bgPreviewImg=document.getElementById('bgPreviewImg');
+var emojiUploadInput=document.getElementById('emojiUploadInput');
+var emojiUploadBtn=document.getElementById('emojiUploadBtn');
+var savedEmojiList=document.getElementById('savedEmojiList');
+var sendImageInput=document.getElementById('sendImageInput');
+var sendImageBtn=document.getElementById('sendImageBtn');
+var autoReplyEnable=document.getElementById('autoReplyEnable');
+var autoReplyIntervalSelect=document.getElementById('autoReplyIntervalSelect');
+var contextMenu=document.getElementById('contextMenu');
+var menuQuote=document.getElementById('menuQuote');
+var menuRevoke=document.getElementById('menuRevoke');
+var centerQuote=document.getElementById('centerQuote');
+var exportChatBtn=document.getElementById('exportChatBtn');
+var importChatBtn=document.getElementById('importChatBtn');
+var chatImportInput=document.getElementById('chatImportInput');
+var memImageFileInput=document.getElementById('memImageFileInput');
+var noteModal=document.getElementById('noteModal');
+var calTitle=document.getElementById('calTitle');
+var calDays=document.getElementById('calDays');
+var calPrev=document.getElementById('calPrev');
+var calNext=document.getElementById('calNext');
+var detailDate=document.getElementById('detailDate');
+var detailSelfAvatar=document.getElementById('detailSelfAvatar');
+var detailContactAvatar=document.getElementById('detailContactAvatar');
+var detailContent=document.getElementById('detailContent');
+var noteColorBlocks=document.getElementById('noteColorBlocks');
+var detailWriteBtn=document.getElementById('detailWriteBtn');
+var writeArea=document.getElementById('writeArea');
+var noteWriteInput=document.getElementById('noteWriteInput');
+var noteWriteImageBtn=document.getElementById('noteWriteImageBtn');
+var noteWritePreview=document.getElementById('noteWritePreview');
+var noteWriteSubmit=document.getElementById('noteWriteSubmit');
+var noteCloseBtn=document.getElementById('noteCloseBtn');
+var noteImageInput=document.getElementById('noteImageInput');
+var currentSelectedGroupId = null;
+var emojiList = ["😀","😃","🤣","🥰","🥺","😍","😋","😏","😴","😳","😱","😼","😽","😻","😘","🤩","🥳","😎","💖","💓","💞","💕","✨","🎉","🌸","🌹","🌷","🍀","🌈","⭐","🔥","💧","☀️","🌙","🐱","🐶","🫂","🤗","🫶","💪","👏","🙏","👋","🤝","❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎"];
+
+// 工具函数
+function generateId(){ return 'msg_'+Date.now()+'_'+Math.random().toString(36).substr(2,6); }
+function getRandomItem(arr){ if(!arr||arr.length===0) return '……'; return arr[Math.floor(Math.random()*arr.length)]; }
+function showToast(text, duration){ duration=duration||2500; var old=document.querySelector('.toast-message'); if(old) old.remove(); var div=document.createElement('div'); div.className='toast-message'; div.textContent=text; document.body.appendChild(div); setTimeout(function(){ div.classList.add('hide'); setTimeout(function(){ div.remove(); },400); }, duration); }
+function isWithinFiveHours(msg){ if(!msg||!msg.time) return false; return (Date.now()-msg.time) <= 5*60*60*1000; }
+function daysSince(dateStr){ var target=new Date(dateStr); var now=new Date(); now.setHours(0,0,0,0); target.setHours(0,0,0,0); return Math.floor((now-target)/(1000*60*60*24)); }
+function compressImage(file,maxW,maxH,quality){ return new Promise(function(resolve,reject){ var reader=new FileReader(); reader.onload=function(e){ var img=new Image(); img.onload=function(){ var canvas=document.createElement('canvas'); var w=img.width,h=img.height; if(w>maxW){ h=h*maxW/w; w=maxW; } if(h>maxH){ w=w*maxH/h; h=maxH; } canvas.width=w; canvas.height=h; var ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,w,h); resolve(canvas.toDataURL('image/jpeg',quality||0.7)); }; img.onerror=reject; img.src=e.target.result; }; reader.onerror=reject; reader.readAsDataURL(file); }); }
+
+// 小记相关
+var currentYear,currentMonth,selectedDate=null,writeImages=[];
+function getNotesForDate(dateObj,author){
+    var dateStr=dateObj.getFullYear()+'-'+String(dateObj.getMonth()+1).padStart(2,'0')+'-'+String(dateObj.getDate()).padStart(2,'0');
+    return notes.filter(function(n){
+        var nd=new Date(n.time);
+        var ns=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-'+String(nd.getDate()).padStart(2,'0');
+        return ns===dateStr && n.author===author;
+    });
+}
+function renderCalendar(year,month){
+    currentYear=year; currentMonth=month;
+    calTitle.textContent=year+'年'+(month+1)+'月';
+    var firstDay=new Date(year,month,1);
+    var lastDay=new Date(year,month+1,0);
+    var daysInMonth=lastDay.getDate();
+    var startWeekday=firstDay.getDay();
+    var html='';
+    for(var i=0;i<startWeekday;i++) html+='<div class="cal-day empty"></div>';
+    var today=new Date();
+    var todayStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    for(var d=1;d<=daysInMonth;d++){
+        var dateObj=new Date(year,month,d);
+        var dateStr=year+'-'+String(month+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+        var isToday=(dateStr===todayStr);
+        var isSelected=(selectedDate && selectedDate.getFullYear()===year && selectedDate.getMonth()===month && selectedDate.getDate()===d);
+        var hasSelf=notes.some(function(n){ var nd=new Date(n.time); var ns=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-'+String(nd.getDate()).padStart(2,'0'); return ns===dateStr && n.author==='self'; });
+        var hasContact=notes.some(function(n){ var nd=new Date(n.time); var ns=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-'+String(nd.getDate()).padStart(2,'0'); return ns===dateStr && n.author==='contact'; });
+        var classes='cal-day';
+        if(isToday) classes+=' today';
+        if(isSelected) classes+=' selected';
+        if(hasSelf) classes+=' has-note-self';
+        if(hasContact) classes+=' has-note-contact';
+        html+='<div class="'+classes+'" data-date="'+dateStr+'">'+d+'</div>';
+    }
+    calDays.innerHTML=html;
+    calDays.querySelectorAll('.cal-day:not(.empty)').forEach(function(el){
+        el.addEventListener('click',function(){
+            var ds=this.dataset.date;
+            var parts=ds.split('-');
+            var y=parseInt(parts[0]), m=parseInt(parts[1])-1, d=parseInt(parts[2]);
+            selectedDate=new Date(y,m,d);
+            renderCalendar(y,m);
+            noteColorBlocks.innerHTML='';
+            detailContent.innerHTML='<div class="empty-hint">点击头像查看色块</div>';
+            document.querySelectorAll('.detail-avatars .avatar-wrap').forEach(function(w){ w.style.background='transparent'; });
+        });
+    });
+    if(!selectedDate){
+        var todayInMonth=(today.getFullYear()===year && today.getMonth()===month);
+        if(todayInMonth) selectedDate=new Date(today);
+        else selectedDate=new Date(year,month,1);
+        renderCalendar(year,month);
+    } else {
+        if(selectedDate.getFullYear()!==year || selectedDate.getMonth()!==month){
+            selectedDate=new Date(year,month,1);
+            renderCalendar(year,month);
+        }
+    }
+}
+function showDetailForDate(dateObj,author){
+    var notesForAuthor=getNotesForDate(dateObj,author);
+    noteColorBlocks.innerHTML='';
+    if(notesForAuthor.length===0){
+        noteColorBlocks.innerHTML='<span style="font-size:12px;color:#aaa;">今天还没有小记</span>';
+        detailContent.innerHTML='<div class="empty-hint">点击色块查看小记详情</div>';
+        return;
+    }
+    notesForAuthor.sort(function(a,b){ return a.time-b.time; });
+    notesForAuthor.forEach(function(note,index){
+        var color=note.color||getRandomColor();
+        var block=document.createElement('div');
+        block.className='note-color-block';
+        block.style.backgroundColor=color;
+        block.textContent='#'+(index+1);
+        block.dataset.index=index;
+        block.title=new Date(note.time).toLocaleString('zh-CN',{hour12:false});
+        var tip=document.createElement('div');
+        tip.className='block-tooltip';
+        tip.textContent=new Date(note.time).toLocaleString('zh-CN',{hour12:false});
+        block.appendChild(tip);
+        block.addEventListener('click',function(){
+            var idx=parseInt(this.dataset.index);
+            var targetNote=notesForAuthor[idx];
+            if(!targetNote) return;
+            var authorName=(targetNote.author==='self')?selfName:contactName;
+            var imagesHtml='';
+            if(targetNote.images && targetNote.images.length){
+                imagesHtml='<div class="detail-images">';
+                for(var i=0;i<targetNote.images.length;i++) imagesHtml+='<img src="'+targetNote.images[i]+'">';
+                imagesHtml+='</div>';
+            }
+            var timeStr=new Date(targetNote.time).toLocaleString('zh-CN',{hour12:false});
+            var readHtml='';
+            if(targetNote.readBy && targetNote.readBy.length){
+                readHtml='<div style="font-size:11px;color:#7a8ca6;margin-top:4px;">已读: ';
+                targetNote.readBy.forEach(function(r){
+                    if(r==='self') readHtml+='<img src="'+selfAvatar+'" style="width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:2px;" title="我">';
+                    else if(r==='contact') readHtml+='<img src="'+contactAvatar+'" style="width:16px;height:16px;border-radius:50%;vertical-align:middle;margin-right:2px;" title="对方">';
+                });
+                readHtml+='</div>';
+            } else {
+                if(targetNote.author==='contact') readHtml='<div style="font-size:11px;color:#aaa;margin-top:4px;">未读</div>';
+            }
+            var contentHtml='<div style="background:'+color+';border-radius:12px;padding:12px;border:1px solid rgba(74,144,226,0.1);">'+
+                '<div style="font-weight:600;font-size:13px;color:#2a3a52;">'+authorName+' 的小记</div>'+
+                '<div style="font-size:12px;color:#7a8ca6;margin-bottom:4px;">'+timeStr+'</div>'+
+                '<div style="white-space:pre-wrap;word-break:break-word;">'+targetNote.text.replace(/\n/g,'<br>')+'</div>'+
+                imagesHtml+readHtml+'</div>';
+            if(targetNote.author==='self'){
+                contentHtml+='<button class="note-delete-btn" data-id="'+targetNote.id+'">删除</button>';
+            }
+            detailContent.innerHTML=contentHtml;
+            var deleteBtn=detailContent.querySelector('.note-delete-btn');
+            if(deleteBtn){
+                deleteBtn.addEventListener('click',function(e){
+                    e.stopPropagation();
+                    var id=this.dataset.id;
+                    if(confirm('确定删除这条小记吗？')){
+                        notes=notes.filter(function(n){ return n.id!==id; });
+                        saveNotes(notes);
+                        renderCalendar(currentYear,currentMonth);
+                        showDetailForDate(dateObj,author);
+                        showToast('小记已删除');
+                    }
+                });
+            }
+            if(targetNote.author==='contact' && (!targetNote.readBy || targetNote.readBy.indexOf('self')===-1)){
+                if(!targetNote.readBy) targetNote.readBy=[];
+                targetNote.readBy.push('self');
+                saveNotes(notes);
+                renderCalendar(currentYear,currentMonth);
+            }
+        });
+        noteColorBlocks.appendChild(block);
+    });
+}
+
+// UI更新
+function updateUI(){
+    contactNameDisplay.textContent=contactName;
+    selfNameDisplay.textContent=selfName;
+    contactStatusDisplay.textContent=contactStatus;
+    selfStatusDisplay.textContent=selfStatus;
+    contactAvatarImg.src=contactAvatar;
+    selfAvatarImg.src=selfAvatar;
+    setContactAvatarPreview.src=contactAvatar;
+    setSelfAvatarPreview.src=selfAvatar;
+    centerQuote.textContent=currentQuote;
+    setQuote.value=currentQuote;
+    applyFontSize(currentFontSize);
+    applyAvatarSize(currentAvatarSize);
+    detailSelfAvatar.src=selfAvatar;
+    detailContactAvatar.src=contactAvatar;
+    var bgData=localStorage.getItem(BG_KEY)||'';
+    if(bgData && bgData.length>100){
+        document.body.style.backgroundImage='url('+bgData+')';
+        document.body.style.backgroundSize='cover';
+        document.body.style.backgroundPosition='center';
+        document.body.style.backgroundColor='';
+        bgPreviewImg.src=bgData;
+        bgPreviewImg.style.display='inline-block';
+    } else {
+        document.body.style.backgroundImage='none';
+        document.body.style.backgroundColor='transparent';
+        bgPreviewImg.style.display='none';
+    }
+    autoReplyEnable.value=autoReplySettings.enabled?'1':'0';
+    autoReplyIntervalSelect.value=autoReplySettings.interval||30;
+    rpsDelayRange.value=rpsDelay;
+    rpsDelayDisplay.textContent=rpsDelay;
+    renderSavedEmojiList();
+}
+function applyFontSize(size){ currentFontSize=size; var app=document.querySelector('.app'); app.classList.remove('font-small','font-medium','font-large'); if(size==='small') app.classList.add('font-small'); else if(size==='large') app.classList.add('font-large'); else app.classList.add('font-medium'); fontSizeSelect.value=size; }
+function applyAvatarSize(size){ currentAvatarSize=size; var app=document.querySelector('.app'); app.classList.remove('avatar-size-small','avatar-size-medium','avatar-size-large'); if(size==='small') app.classList.add('avatar-size-small'); else if(size==='large') app.classList.add('avatar-size-large'); else app.classList.add('avatar-size-medium'); avatarSizeSelect.value=size; }
+
+// ================================================================
+// 核心：消息渲染 + 引用跳转 + 长按菜单（引用/撤回）
+// ================================================================
+function renderMessages(){
+    if(!messages.length){ chatArea.innerHTML='<div class="empty-chat">开始与好友聊天</div>'; updateStatus('已连接'); return; }
+    var html='';
+    for(var i=0;i<messages.length;i++){
+        var msg=messages[i];
+        if(msg.isSystem){ html+='<div class="system-message">'+msg.text+'</div>'; continue; }
+        var isSelf=(msg.from==='self');
+        var avatarSrc=isSelf?selfAvatar:contactAvatar;
+        var timeStr=msg.time?new Date(msg.time).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';
+        var content=msg.text;
+        var readStatus=isSelf?(msg.read?'已读':'未读'):'';
+        // 引用块
+        var quoteHtml='';
+        if(msg.replyTo){
+            var repliedMsg=messages.find(function(m){ return m.id===msg.replyTo; });
+            if(repliedMsg && !repliedMsg.isSystem){
+                var repliedText=repliedMsg.text;
+                var repliedTime=repliedMsg.time?new Date(repliedMsg.time).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'';
+                var authorName=(repliedMsg.from==='self')?selfName:contactName;
+                quoteHtml='<div class="quote-block" data-jump="'+repliedMsg.id+'">'+
+                    '<span class="quote-author">'+authorName+'：</span>'+
+                    '<span class="quote-text">'+repliedText+'</span>'+
+                    '<span class="quote-time">'+repliedTime+'</span>'+
+                    '</div>';
+            } else {
+                quoteHtml='<div class="quote-block" style="color:#b0b0b0;cursor:default;opacity:0.6;">引用消息已撤回</div>';
+            }
+        }
+        // 引用按钮（所有非系统消息都有）
+        var quoteBtnHtml = '<span class="quote-btn" data-msg-id="'+msg.id+'">↩️</span>';
+
+        if(i===0 || new Date(messages[i-1].time).toDateString()!==new Date(msg.time).toDateString()){
+            html+='<div class="date-divider">'+new Date(msg.time).toLocaleDateString('zh-CN')+'</div>';
+        }
+        html+='<div class="message-wrapper '+(isSelf?'self':'')+'" data-msg-id="'+msg.id+'">';
+        html+='<img class="avatar" src="'+avatarSrc+'" alt="avatar" data-owner="'+(isSelf?'self':'contact')+'">';
+        html+='<div class="bubble">';
+        if(quoteHtml) html+=quoteHtml;
+        html+=content;
+        html+='<span class="msg-time">'+timeStr+(readStatus?' <span class="read-status">'+readStatus+'</span>':'') + quoteBtnHtml + '</span>';
+        html+='</div></div>';
+    }
+    chatArea.innerHTML=html;
+    chatArea.scrollTop=chatArea.scrollHeight;
+
+    // 头像点击上传
+    chatArea.querySelectorAll('.avatar').forEach(function(el){
+        el.addEventListener('click',function(e){
+            e.stopPropagation();
+            var owner=this.dataset.owner;
+            if(owner==='contact') contactFileInput.click();
+            else if(owner==='self') selfFileInput.click();
+        });
+    });
+
+    // 引用块跳转
+    chatArea.querySelectorAll('.quote-block[data-jump]').forEach(function(el){
+        el.addEventListener('click',function(){
+            var targetId=this.dataset.jump;
+            var targetEl=chatArea.querySelector('.message-wrapper[data-msg-id="'+targetId+'"]');
+            if(targetEl){
+                targetEl.scrollIntoView({behavior:'smooth',block:'center'});
+                targetEl.style.backgroundColor='rgba(74,144,226,0.15)';
+                setTimeout(function(){ targetEl.style.backgroundColor=''; },2000);
+            } else {
+                showToast('原消息已不存在');
+            }
+        });
+    });
+
+    // 引用按钮点击：设置输入框为引用模式
+    chatArea.querySelectorAll('.quote-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var msgId = this.dataset.msgId;
+            var msg = messages.find(function(m) { return m.id === msgId; });
+            if (msg && !msg.isSystem) {
+                if (!isWithinFiveHours(msg)) {
+                    showToast('无法引用该消息（超过5小时）');
+                    return;
+                }
+                var replyText = msg.text;
+                var authorName = (msg.from==='self') ? selfName : contactName;
+                if (replyText.length > 30) replyText = replyText.substring(0,30) + '...';
+                // 显示引用提示
+                messageInput.placeholder = '回复 ' + authorName + '：' + replyText;
+                messageInput.focus();
+                messageInput.dataset.replyTo = msg.id;
+                // 清空原有输入
+                messageInput.value = '';
+            }
+        });
+    });
+
+    // ===== 长按菜单（引用 & 撤回） =====
+    var currentMenuMsgId = null;
+    function showContextMenu(x, y, msgId) {
+        currentMenuMsgId = msgId;
+        var menu = contextMenu;
+        menu.style.left = x + 'px';
+        menu.style.top = y + 'px';
+        menu.classList.add('show');
+        var rect = menu.getBoundingClientRect();
+        if (rect.right > window.innerWidth) { menu.style.left = (x - rect.width) + 'px'; }
+        if (rect.bottom > window.innerHeight) { menu.style.top = (y - rect.height) + 'px'; }
+    }
+    function hideContextMenu() { contextMenu.classList.remove('show'); currentMenuMsgId = null; }
+    document.addEventListener('click', function(e) { if (!contextMenu.contains(e.target)) hideContextMenu(); });
+
+    // 菜单 - 引用（与上面按钮功能一致）
+    menuQuote.onclick = function() {
+        if (!currentMenuMsgId) return;
+        var msg = messages.find(function(m) { return m.id === currentMenuMsgId; });
+        if (msg && !msg.isSystem) {
+            if (!isWithinFiveHours(msg)) { showToast('无法引用该消息（超过5小时）'); hideContextMenu(); return; }
+            var replyText = msg.text;
+            var authorName = (msg.from==='self') ? selfName : contactName;
+            if (replyText.length > 30) replyText = replyText.substring(0,30) + '...';
+            messageInput.placeholder = '回复 ' + authorName + '：' + replyText;
+            messageInput.focus();
+            messageInput.dataset.replyTo = msg.id;
+            messageInput.value = '';
+        }
+        hideContextMenu();
+    };
+
+    // 菜单 - 撤回（仅自己发送的消息，非系统）
+    menuRevoke.onclick = function() {
+        if (!currentMenuMsgId) return;
+        var index = messages.findIndex(function(m) { return m.id === currentMenuMsgId; });
+        if (index === -1) return;
+        var msg = messages[index];
+        if (msg.isSystem) { hideContextMenu(); return; }
+        if (msg.from !== 'self') { showToast('只能撤回自己发送的消息'); hideContextMenu(); return; }
+        var systemMsg = {
+            id: generateId(),
+            text: '你撤回了一条消息',
+            isSystem: true,
+            time: Date.now(),
+            from: 'system'
+        };
+        messages.splice(index, 1);
+        messages.splice(index, 0, systemMsg);
+        saveData();
+        renderMessages();
+        hideContextMenu();
+    };
+
+    // 绑定长按事件
+    chatArea.querySelectorAll('.message-wrapper').forEach(function(wrapper) {
+        var timer = null;
+        wrapper.addEventListener('touchstart', function(e) {
+            timer = setTimeout(function() {
+                var touch = e.touches[0];
+                showContextMenu(touch.clientX, touch.clientY, wrapper.dataset.msgId);
+            }, 500);
+        });
+        wrapper.addEventListener('touchend', function() { clearTimeout(timer); });
+        wrapper.addEventListener('touchmove', function() { clearTimeout(timer); });
+        wrapper.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showContextMenu(e.clientX, e.clientY, wrapper.dataset.msgId);
+        });
+        var mouseTimer = null;
+        wrapper.addEventListener('mousedown', function(e) {
+            if (e.button !== 0) return;
+            mouseTimer = setTimeout(function() { showContextMenu(e.clientX, e.clientY, wrapper.dataset.msgId); }, 500);
+        });
+        wrapper.addEventListener('mouseup', function() { clearTimeout(mouseTimer); });
+        wrapper.addEventListener('mouseleave', function() { clearTimeout(mouseTimer); });
+    });
+
+    updateStatus('已连接');
+}
+
+function updateStatus(text,isWaiting){ statusText.textContent=text||'已连接'; if(isWaiting){ statusDot.className='dot'; statusDot.style.background='#9CA3AF'; } else { statusDot.className='dot read'; statusDot.style.background='#10B981'; } }
+
+// 发送消息（发送后清除引用状态）
+function sendMessage(text,replyToId){
+    if(text===undefined){ text=messageInput.value.trim(); if(!text) return; messageInput.value=''; } else { if(!text) return; }
+    var replyTo = replyToId || messageInput.dataset.replyTo || null;
+    // 检查引用有效性
+    if (replyTo) {
+        var replied = messages.find(function(m) { return m.id === replyTo; });
+        if (replied && !isWithinFiveHours(replied)) {
+            showToast('无法引用该消息（超过5小时）');
+            messageInput.dataset.replyTo = '';
+            messageInput.placeholder = '输入消息...';
+            return;
+        }
+    }
+    var now=Date.now();
+    var newMsg={id:generateId(),text:text,from:'self',read:false,time:now,replyTo:replyTo || null};
+    messages.push(newMsg);
+    // ★ 清除引用状态 ★
+    messageInput.dataset.replyTo = '';
+    messageInput.placeholder = '输入消息...';
+    renderMessages();
+    saveData();
+
+    // 模拟对方回复
+    var delaySec=replyDelay;
+    updateStatus('等待回复... '+delaySec+'s',true);
+    var countdown=delaySec;
+    var timer=setInterval(function(){ countdown--; if(countdown>0){ updateStatus('等待回复... '+countdown+'s',true); } else { clearInterval(timer); updateStatus('回复中...',true); } },1000);
+    setTimeout(function(){
+        try{
+            var allWords=getAllWords();
+            if(allWords.length===0){ updateStatus('无字卡',false); return; }
+            var replyText=getRandomItem(allWords);
+            var replyMsg={id:generateId(),text:replyText,from:'contact',read:true,time:Date.now(),replyTo:null};
+            messages.push(replyMsg);
+            renderMessages();
+            saveData();
+            updateStatus('已回复',false);
+        } catch(e){
+            var errMsg={id:generateId(),text:'……',from:'contact',read:true,time:Date.now(),replyTo:null};
+            messages.push(errMsg);
+            renderMessages();
+            saveData();
+            updateStatus('回复出错',false);
+        }
+    }, delaySec*1000);
+}
+function getAllWords(){ var all=[]; for(var i=0;i<wordGroups.length;i++){ for(var j=0;j<wordGroups[i].words.length;j++){ all.push(wordGroups[i].words[j]); } } var unique=[]; var seen={}; for(var k=0;k<all.length;k++){ if(!seen[all[k]]){ seen[all[k]]=true; unique.push(all[k]); } } return unique; }
+
+// ================================================================
+// 字卡管理（保持不变）
+// ================================================================
+function renderWordGroups(){
+    wordGroupsTop.innerHTML='';
+    wordGroups.forEach(function(group){
+        var chip=document.createElement('div');
+        chip.className='word-group-chip'+(group.id===currentSelectedGroupId?' active':'')+(group.name==='未分组'?' ungrouped':'');
+        chip.innerHTML='<span class="chip-name">'+group.name+'</span><span class="chip-count">'+group.words.length+' 词</span>';
+        if(group.name!=='未分组'){
+            var delBtn=document.createElement('button');
+            delBtn.className='chip-del';
+            delBtn.textContent='×';
+            delBtn.addEventListener('click',function(e){
+                e.stopPropagation();
+                if(confirm('确定删除分组 "'+group.name+'"？词条将移至“未分组”')){
+                    var words=group.words;
+                    var ungrouped=wordGroups.find(function(g){ return g.id===1; });
+                    if(!ungrouped){ ungrouped={id:1,name:'未分组',words:[]}; wordGroups.unshift(ungrouped); }
+                    ungrouped.words=ungrouped.words.concat(words);
+                    wordGroups=wordGroups.filter(function(g){ return g.id!==group.id; });
+                    saveData();
+                    if(currentSelectedGroupId===group.id) currentSelectedGroupId=1;
+                    renderWordGroups();
+                    renderWordContent(currentSelectedGroupId);
+                }
+            });
+            chip.appendChild(delBtn);
+        }
+        chip.addEventListener('click',function(){
+            currentSelectedGroupId=group.id;
+            renderWordGroups();
+            renderWordContent(group.id);
+        });
+        wordGroupsTop.appendChild(chip);
+    });
+}
+function renderWordContent(groupId){
+    var group=wordGroups.find(function(g){ return g.id===groupId; });
+    if(!group){ wordContentArea.innerHTML='<div class="empty-hint">分组不存在</div>'; return; }
+    var html='';
+    if(group.words.length===0){
+        html='<div class="empty-hint">该分组暂无词条</div>';
+    } else {
+        html+='<div class="word-chips-wrap">';
+        group.words.forEach(function(word,idx){
+            html+='<span class="word-chip-item">'+word+
+                '<button class="wdel" data-gid="'+group.id+'" data-idx="'+idx+'">✕</button>'+
+                '<select class="move-select" data-gid="'+group.id+'" data-idx="'+idx+'">'+
+                '<option value="">移动到</option>';
+            wordGroups.forEach(function(g){
+                if(g.id!==group.id) html+='<option value="'+g.id+'">'+g.name+'</option>';
+            });
+            html+='</select></span>';
+        });
+        html+='</div>';
+    }
+    html+='<div class="add-word-row">';
+    html+='<input type="text" id="newWordInput" placeholder="添加词条">';
+    html+='<button id="addWordBtn">添加</button>';
+    html+='</div>';
+    wordContentArea.innerHTML=html;
+    wordContentArea.querySelectorAll('.wdel').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            var gid=parseInt(this.dataset.gid);
+            var idx=parseInt(this.dataset.idx);
+            var g=wordGroups.find(function(gr){ return gr.id===gid; });
+            if(g){ g.words.splice(idx,1); saveData(); renderWordContent(gid); renderWordGroups(); }
+        });
+    });
+    wordContentArea.querySelectorAll('.move-select').forEach(function(sel){
+        sel.addEventListener('change',function(){
+            var gid=parseInt(this.dataset.gid);
+            var idx=parseInt(this.dataset.idx);
+            var targetGid=parseInt(this.value);
+            if(!targetGid){ this.value=''; return; }
+            var srcGroup=wordGroups.find(function(g){ return g.id===gid; });
+            var targetGroup=wordGroups.find(function(g){ return g.id===targetGid; });
+            if(srcGroup && targetGroup){
+                var word=srcGroup.words[idx];
+                srcGroup.words.splice(idx,1);
+                targetGroup.words.push(word);
+                saveData();
+                renderWordContent(gid);
+                renderWordGroups();
+            }
+            this.value='';
+        });
+    });
+    var addBtn=document.getElementById('addWordBtn');
+    var input=document.getElementById('newWordInput');
+    if(addBtn && input){
+        addBtn.addEventListener('click',function(){
+            var val=input.value.trim();
+            if(!val) return;
+            var g=wordGroups.find(function(gr){ return gr.id===groupId; });
+            if(g){ g.words.push(val); saveData(); renderWordContent(groupId); renderWordGroups(); input.value=''; }
+        });
+        input.addEventListener('keydown',function(e){ if(e.key==='Enter') addBtn.click(); });
+    }
+}
+
+function exportWordGroups(){
+    var data={wordGroups:wordGroups};
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='word_groups_'+new Date().toISOString().slice(0,10)+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('字卡数据已导出');
+}
+function importWordGroups(file){
+    var reader=new FileReader();
+    reader.onload=function(e){
+        try{
+            var data=JSON.parse(e.target.result);
+            if(data.wordGroups && Array.isArray(data.wordGroups)){
+                data.wordGroups.forEach(function(importedGroup){
+                    var existing=wordGroups.find(function(g){ return g.name===importedGroup.name; });
+                    if(existing){
+                        existing.words=importedGroup.words.slice();
+                    } else {
+                        importedGroup.id=wordIdCounter++;
+                        wordGroups.push(importedGroup);
+                    }
+                });
+                saveData();
+                renderWordGroups();
+                if(currentSelectedGroupId) renderWordContent(currentSelectedGroupId);
+                showToast('字卡导入成功');
+            } else {
+                showToast('格式错误，缺少 wordGroups');
+            }
+        } catch(err){
+            showToast('解析失败: '+err.message);
+        }
+    };
+    reader.readAsText(file);
+}
+
+// 聊天记录导入导出
+function exportChatHistory(){
+    var data={messages:messages};
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='chat_history_'+new Date().toISOString().slice(0,10)+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('聊天记录已导出');
+}
+function importChatHistory(file){
+    var reader=new FileReader();
+    reader.onload=function(e){
+        try{
+            var data=JSON.parse(e.target.result);
+            if(data.messages && Array.isArray(data.messages)){
+                if(confirm('导入将覆盖当前所有聊天记录，确认继续？')){
+                    messages=data.messages;
+                    saveData();
+                    renderMessages();
+                    showToast('聊天记录导入成功');
+                }
+            } else {
+                showToast('格式错误，缺少 messages');
+            }
+        } catch(err){
+            showToast('解析失败: '+err.message);
+        }
+    };
+    reader.readAsText(file);
+}
+
+// 纪念日（保持原样）
+function renderMemoryList(){
+    memoryList.innerHTML='';
+    memories.forEach(function(mem){
+        var div=document.createElement('div');
+        div.className='memory-item';
+        div.innerHTML='<div class="mem-info"><span class="mem-name">'+mem.name+'</span><span class="mem-date">'+mem.date+(mem.isPrimary?' ⭐':'')+'</span></div>'+
+            '<div class="mem-actions">'+
+            (mem.isPrimary?'':'<button class="mem-set-primary" data-id="'+mem.id+'">⭐设为主</button>')+
+            '<button class="mem-set-image" data-id="'+mem.id+'">🖼️</button>'+
+            '<button class="mem-delete" data-id="'+mem.id+'">🗑️</button>'+
+            '</div>';
+        memoryList.appendChild(div);
+        var imgBtn=div.querySelector('.mem-set-image');
+        imgBtn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var id=parseInt(this.dataset.id);
+            memImageFileInput.dataset.memId=id;
+            memImageFileInput.click();
+        });
+        var delBtn=div.querySelector('.mem-delete');
+        delBtn.addEventListener('click',function(e){
+            e.stopPropagation();
+            var id=parseInt(this.dataset.id);
+            if(confirm('删除此纪念日？')){
+                memories=memories.filter(function(m){ return m.id!==id; });
+                if(memories.length>0 && !memories.some(function(m){ return m.isPrimary; })) memories[0].isPrimary=true;
+                saveData();
+                renderMemoryList();
+                if(memoryMainModal.classList.contains('show')) renderMemoryMain();
+            }
+        });
+        var primaryBtn=div.querySelector('.mem-set-primary');
+        if(primaryBtn){
+            primaryBtn.addEventListener('click',function(e){
+                e.stopPropagation();
+                var id=parseInt(this.dataset.id);
+                memories.forEach(function(m){ m.isPrimary=(m.id===id); });
+                saveData();
+                renderMemoryList();
+                if(memoryMainModal.classList.contains('show')) renderMemoryMain();
+            });
+        }
+    });
+}
+memImageFileInput.addEventListener('change',function(e){
+    var file=e.target.files[0];
+    if(!file) return;
+    var memId=parseInt(this.dataset.memId);
+    if(!memId) return;
+    compressImage(file,600,600,0.7).then(function(dataUrl){
+        var mem=memories.find(function(m){ return m.id===memId; });
+        if(mem){ mem.bgImage=dataUrl; saveData(); renderMemoryList(); if(memoryMainModal.classList.contains('show')) renderMemoryMain(); showToast('图片已更新'); }
+        memImageFileInput.value='';
+    }).catch(function(){ alert('图片压缩失败'); });
+});
+function renderMemoryMain(){
+    var primary=memories.find(function(m){ return m.isPrimary; })||memories[0];
+    if(!primary){ memoryMainDisplay.innerHTML='<div style="text-align:center;color:#aaa;">暂无纪念日</div>'; memorySwitchList.innerHTML=''; return; }
+    var days=daysSince(primary.date);
+    var styleClass=(memBgStyle.value==='transparent')?'memory-transparent':'memory-blur';
+    var bgStyle=primary.bgImage?'background-image:url('+primary.bgImage+');':'';
+    var html='<div class="memory-card '+styleClass+'" style="'+bgStyle+'">';
+    html+='<div class="memory-title">'+primary.name+'</div>';
+    html+='<div class="memory-days">'+days+'<span class="day-unit"> 天</span></div>';
+    html+='</div>';
+    memoryMainDisplay.innerHTML=html;
+    memorySwitchList.innerHTML='';
+    memories.forEach(function(mem){
+        var btn=document.createElement('button');
+        btn.textContent=mem.name+(mem.isPrimary?' ⭐':'');
+        btn.style.cssText='padding:4px 12px;border-radius:16px;border:2px solid '+(mem.isPrimary?'#4a90e2':'rgba(74,144,226,0.2)')+';background:'+(mem.isPrimary?'rgba(74,144,226,0.08)':'transparent')+';cursor:pointer;font-size:12px;';
+        btn.addEventListener('click',function(){
+            memories.forEach(function(m){ m.isPrimary=(m.id===mem.id); });
+            saveData();
+            renderMemoryMain();
+            renderMemoryList();
+        });
+        memorySwitchList.appendChild(btn);
+    });
+}
+
+// 猜拳
+var rpsChoices=['rock','scissors','paper'];
+var rpsEmoji={rock:'🗻',scissors:'✂️',paper:'📄'};
+var rpsWin={rock:'scissors',scissors:'paper',paper:'rock'};
+function playRPS(playerChoice){
+    var btns=rpsModal.querySelectorAll('.rps-choices button');
+    btns.forEach(function(b){ b.disabled=true; });
+    rpsResult.innerHTML='思考中... 🤔';
+    var delay=rpsDelay*1000;
+    setTimeout(function(){
+        var computerChoice=getRandomItem(rpsChoices);
+        var result='';
+        if(playerChoice===computerChoice) result='平局 🤝';
+        else if(rpsWin[playerChoice]===computerChoice) result='你赢了！ 🎉';
+        else result='你输了 😢';
+        rpsResult.innerHTML='你出 '+rpsEmoji[playerChoice]+'，对方出 '+rpsEmoji[computerChoice]+'<br><strong>'+result+'</strong>';
+        btns.forEach(function(b){ b.disabled=false; });
+    }, delay);
+}
+
+// 表情面板
+function initEmojiPanel(){
+    var panel=emojiPanel;
+    panel.innerHTML='';
+    var topRow=document.createElement('div');
+    topRow.style.display='flex';
+    topRow.style.flexWrap='wrap';
+    topRow.style.gap='4px';
+    topRow.style.alignItems='center';
+    topRow.style.width='100%';
+    emojiList.forEach(function(emoji){
+        var span=document.createElement('span');
+        span.textContent=emoji;
+        span.addEventListener('click',function(){
+            sendMessage(emoji);
+            emojiPanel.classList.remove('open');
+        });
+        topRow.appendChild(span);
+    });
+    panel.appendChild(topRow);
+    var container=document.createElement('div');
+    container.className='saved-emoji-container';
+    container.id='emojiSavedContainer';
+    panel.appendChild(container);
+    renderSavedEmojiInPanel();
+}
+function renderSavedEmojiInPanel(){
+    var container=document.getElementById('emojiSavedContainer');
+    if(!container) return;
+    container.innerHTML='';
+    emojiImages.forEach(function(src,idx){
+        var img=document.createElement('img');
+        img.src=src;
+        img.className='saved-emoji';
+        img.dataset.idx=idx;
+        img.addEventListener('click',function(e){
+            e.stopPropagation();
+            sendMessage('<img src="'+emojiImages[parseInt(this.dataset.idx)]+'" style="max-width:150px;border-radius:8px;">');
+            emojiPanel.classList.remove('open');
+        });
+        container.appendChild(img);
+    });
+    if(emojiImages.length===0){
+        var hint=document.createElement('span');
+        hint.style.fontSize='12px';
+        hint.style.color='#7a8ca6';
+        hint.textContent='（暂无自定义表情，可在设置中上传）';
+        container.appendChild(hint);
+    }
+}
+function renderSavedEmojiList(){
+    savedEmojiList.innerHTML='';
+    emojiImages.forEach(function(src,idx){
+        var img=document.createElement('img');
+        img.src=src;
+        img.style.cssText='width:50px;height:50px;object-fit:cover;border-radius:8px;border:1px solid rgba(74,144,226,0.2);cursor:pointer;';
+        img.dataset.idx=idx;
+        img.addEventListener('click',function(){
+            if(confirm('删除此表情？')){
+                emojiImages.splice(parseInt(this.dataset.idx),1);
+                saveEmoji(emojiImages);
+                renderSavedEmojiList();
+                renderSavedEmojiInPanel();
+            }
+        });
+        savedEmojiList.appendChild(img);
+    });
+    if(emojiImages.length===0){
+        var hint=document.createElement('span');
+        hint.style.fontSize='13px';
+        hint.style.color='#7a8ca6';
+        hint.textContent='暂无自定义表情';
+        savedEmojiList.appendChild(hint);
+    }
+}
+
+// 自动回复
+var autoReplyTimer=null;
+function startAutoReply(){
+    stopAutoReply();
+    if(!autoReplySettings.enabled) return;
+    var intervalMinutes=parseInt(autoReplyIntervalSelect.value)||30;
+    var intervalSeconds=intervalMinutes*60;
+    autoReplyTimer=setInterval(function(){
+        var fiveHourMsgs=messages.filter(function(m){ return !m.isSystem && isWithinFiveHours(m); });
+        var allWords=getAllWords();
+        if(allWords.length===0) return;
+        var replyText=getRandomItem(allWords);
+        var replyToId=null;
+        if(fiveHourMsgs.length>0 && Math.random()<0.5){
+            var randomMsg=getRandomItem(fiveHourMsgs);
+            replyToId=randomMsg.id;
+        }
+        var replyMsg={id:generateId(),text:replyText,from:'contact',read:true,time:Date.now(),replyTo:replyToId};
+        messages.push(replyMsg);
+        renderMessages();
+        saveData();
+    }, intervalSeconds*1000);
+}
+function stopAutoReply(){ if(autoReplyTimer){ clearInterval(autoReplyTimer); autoReplyTimer=null; } }
+function updateAutoReplySettings(){
+    autoReplySettings.enabled=(autoReplyEnable.value==='1');
+    autoReplySettings.interval=parseInt(autoReplyIntervalSelect.value)||30;
+    saveAutoReply(autoReplySettings);
+    startAutoReply();
+}
+
+// 设置
+function openSettings(){
+    settingsModal.classList.add('show');
+    setContactName.value=contactName;
+    setSelfName.value=selfName;
+    setContactStatus.value=contactStatus;
+    setSelfStatus.value=selfStatus;
+    setContactAvatarPreview.src=contactAvatar;
+    setSelfAvatarPreview.src=selfAvatar;
+    setQuote.value=currentQuote;
+    replyDelayRange.value=replyDelay;
+    replyDelayDisplay.textContent=replyDelay+' 秒';
+    rpsDelayRange.value=rpsDelay;
+    rpsDelayDisplay.textContent=rpsDelay;
+    renderWordGroups();
+    renderMemoryList();
+    showSettingsDetail('grid');
+}
+function closeSettings(){ settingsModal.classList.remove('show'); }
+function showSettingsDetail(target){
+    if(target==='grid'){ document.querySelectorAll('.settings-detail').forEach(function(d){ d.classList.remove('active'); }); settingsGrid.style.display='grid'; return; }
+    settingsGrid.style.display='none';
+    document.querySelectorAll('.settings-detail').forEach(function(d){ d.classList.remove('active'); });
+    var detail=document.getElementById(target);
+    if(detail) detail.classList.add('active');
+    if(target==='detailWord'){ renderWordGroups(); }
+    if(target==='detailMemory'){ renderMemoryList(); }
+}
+function applySettings(){
+    contactName=setContactName.value.trim()||'好友';
+    selfName=setSelfName.value.trim()||'我';
+    contactStatus=setContactStatus.value.trim()||'🟢 在线';
+    selfStatus=setSelfStatus.value.trim()||'💭 思考中';
+    contactAvatar=setContactAvatarPreview.src;
+    selfAvatar=setSelfAvatarPreview.src;
+    currentQuote=setQuote.value.trim()||'我们永远在一起';
+    replyDelay=parseInt(replyDelayRange.value)||8;
+    replyDelayDisplay.textContent=replyDelay+' 秒';
+    rpsDelay=parseInt(rpsDelayRange.value)||10;
+    rpsDelayDisplay.textContent=rpsDelay;
+    contactAvatarImg.src=contactAvatar;
+    selfAvatarImg.src=selfAvatar;
+    currentFontSize=fontSizeSelect.value;
+    currentAvatarSize=avatarSizeSelect.value;
+    applyFontSize(currentFontSize);
+    applyAvatarSize(currentAvatarSize);
+    saveData();
+    localStorage.setItem(QUOTE_KEY,currentQuote);
+    updateUI();
+    closeSettings();
+    showToast('设置已保存');
+}
+
+// 对方小记自动生成
+function getRandomColor(){ var colors=['#FFE4E1','#E6E6FA','#F0FFF0','#FDF5E6','#FFEFD5','#FFF5EE','#F5F5DC','#FFF8DC','#FFFAF0','#FAFAD2','#FFE4B5','#FFDAB9','#FFEBCD','#FFDEAD','#F5DEB3','#DEB887','#D2B48C','#BC8F8F','#F4A460','#DAA520','#B8860B','#CD853F','#D2691E','#8B4513','#A0522D','#6B8E23','#556B2F','#2E8B57','#4682B4','#5F9EA0']; return colors[Math.floor(Math.random()*colors.length)]; }
+function generateContactNote(){
+    var today=new Date();
+    var dateStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    var existing=notes.find(function(n){ var nd=new Date(n.time); var ns=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-'+String(nd.getDate()).padStart(2,'0'); return ns===dateStr && n.author==='contact'; });
+    if(existing) return;
+    var allWords=getAllWords();
+    if(allWords.length===0) return;
+    var text='';
+    while(text.length<50){ var w=getRandomItem(allWords); text+=w+'，'; if(text.length>50) break; }
+    text=text.slice(0,50)+'。';
+    var newNote={id:generateId(),text:text,images:[],author:'contact',time:Date.now(),readBy:[],color:getRandomColor()};
+    notes.push(newNote);
+    saveNotes(notes);
+    if(noteModal.classList.contains('show') && selectedDate){
+        var todayStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+        var selStr=selectedDate.getFullYear()+'-'+String(selectedDate.getMonth()+1).padStart(2,'0')+'-'+String(selectedDate.getDate()).padStart(2,'0');
+        if(todayStr===selStr){ renderCalendar(currentYear,currentMonth); var contactWrap=document.querySelector('.detail-avatars .avatar-wrap[data-author="contact"]'); if(contactWrap && contactWrap.style.background!=='transparent') showDetailForDate(selectedDate,'contact'); }
+    }
+}
+function scheduleContactNote(){
+    var today=new Date();
+    var dateStr=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+    var existing=notes.find(function(n){ var nd=new Date(n.time); var ns=nd.getFullYear()+'-'+String(nd.getMonth()+1).padStart(2,'0')+'-'+String(nd.getDate()).padStart(2,'0'); return ns===dateStr && n.author==='contact'; });
+    if(existing) return;
+    var startOfDay=new Date(today); startOfDay.setHours(0,0,0,0);
+    var endOfDay=new Date(today); endOfDay.setHours(23,59,59,999);
+    var totalSeconds=(endOfDay-startOfDay)/1000;
+    var randomSeconds=Math.floor(Math.random()*totalSeconds);
+    var now=Date.now();
+    var scheduledTime=startOfDay.getTime()+randomSeconds*1000;
+    var delay=scheduledTime-now;
+    if(delay<0) generateContactNote();
+    else setTimeout(function(){ generateContactNote(); }, delay);
+}
+
+// ================================================================
+// 初始化
+// ================================================================
+function init(){
+    sendBtn.addEventListener('click',function(){ sendMessage(); });
+    messageInput.addEventListener('keydown',function(e){ if(e.key==='Enter') sendMessage(); });
+    setContactUploadBtn.addEventListener('click',function(){ contactFileInput.click(); });
+    contactFileInput.addEventListener('change',function(e){
+        var file=e.target.files[0]; if(!file) return;
+        compressImage(file,200,200,0.7).then(function(url){ contactAvatar=url; contactAvatarImg.src=url; setContactAvatarPreview.src=url; saveData(); contactFileInput.value=''; }).catch(function(){ alert('头像压缩失败'); });
+    });
+    setSelfUploadBtn.addEventListener('click',function(){ selfFileInput.click(); });
+    selfFileInput.addEventListener('change',function(e){
+        var file=e.target.files[0]; if(!file) return;
+        compressImage(file,200,200,0.7).then(function(url){ selfAvatar=url; selfAvatarImg.src=url; setSelfAvatarPreview.src=url; saveData(); selfFileInput.value=''; }).catch(function(){ alert('头像压缩失败'); });
+    });
+    contactAvatarImg.addEventListener('click',function(){ contactFileInput.click(); });
+    selfAvatarImg.addEventListener('click',function(){ selfFileInput.click(); });
+    iconMemory.addEventListener('click',function(){ renderMemoryMain(); memoryMainModal.classList.add('show'); });
+    iconNote.addEventListener('click',function(){
+        var today=new Date();
+        if(!selectedDate) selectedDate=new Date(today);
+        currentYear=selectedDate.getFullYear(); currentMonth=selectedDate.getMonth();
+        renderCalendar(currentYear,currentMonth);
+        noteModal.classList.add('show');
+        noteColorBlocks.innerHTML='';
+        detailContent.innerHTML='<div class="empty-hint">点击头像查看色块</div>';
+        document.querySelectorAll('.detail-avatars .avatar-wrap').forEach(function(w){ w.style.background='transparent'; });
+    });
+    iconRPS.addEventListener('click',function(){ rpsResult.textContent='选择你的出拳'; rpsModal.classList.add('show'); });
+    iconSettings.addEventListener('click',openSettings);
+    document.querySelectorAll('.settings-grid-card').forEach(function(card){
+        card.addEventListener('click',function(){
+            var target=this.dataset.target;
+            showSettingsDetail(target);
+            if(target==='detailWord') renderWordGroups();
+            if(target==='detailMemory') renderMemoryList();
+        });
+    });
+    document.querySelectorAll('.back-btn').forEach(function(btn){
+        btn.addEventListener('click',function(){ showSettingsDetail('grid'); });
+    });
+    settingsCancel.addEventListener('click',closeSettings);
+    settingsSave.addEventListener('click',applySettings);
+    addGroupBtn.addEventListener('click',function(){
+        var name=newGroupName.value.trim();
+        if(!name){ showToast('请输入分组名称'); return; }
+        if(name==='未分组'){ showToast('不能创建名为“未分组”的分组'); return; }
+        if(wordGroups.find(function(g){ return g.name===name; })){ showToast('分组已存在'); return; }
+        wordGroups.push({id:wordIdCounter++,name:name,words:[]});
+        saveData();
+        renderWordGroups();
+        newGroupName.value='';
+        var newGroup=wordGroups.find(function(g){ return g.name===name; });
+        if(newGroup){ currentSelectedGroupId=newGroup.id; renderWordGroups(); renderWordContent(currentSelectedGroupId); }
+    });
+    wordSettingsClose.addEventListener('click',closeSettings);
+    wordImportBtn.addEventListener('click',function(){ wordImportInput.click(); });
+    wordImportInput.addEventListener('change',function(e){
+        var file=e.target.files[0];
+        if(file){ importWordGroups(file); wordImportInput.value=''; }
+    });
+    wordExportBtn.addEventListener('click',exportWordGroups);
+    wordDeduplicateBtn.addEventListener('click',function(){
+        wordGroups.forEach(function(g){
+            var seen={};
+            g.words = g.words.filter(function(w){
+                if(seen[w]) return false;
+                seen[w]=true;
+                return true;
+            });
+        });
+        saveData();
+        renderWordGroups();
+        if(currentSelectedGroupId) renderWordContent(currentSelectedGroupId);
+        showToast('去重完成');
+    });
+    memAddBtn.addEventListener('click',function(){
+        var name=memNewName.value.trim();
+        var date=memNewDate.value;
+        if(!name || !date){ showToast('请填写完整'); return; }
+        var isPrimary=(memories.length===0);
+        memories.push({id:memIdCounter++,name:name,date:date,isPrimary:isPrimary,bgImage:''});
+        saveData();
+        renderMemoryList();
+        if(memoryMainModal.classList.contains('show')) renderMemoryMain();
+        memNewName.value='';
+        memNewDate.value='';
+        showToast('已添加纪念日');
+    });
+    memorySettingsClose.addEventListener('click',closeSettings);
+    memoryMainClose.addEventListener('click',function(){ memoryMainModal.classList.remove('show'); });
+    memoryMainEdit.addEventListener('click',function(){ memoryMainModal.classList.remove('show'); openSettings(); showSettingsDetail('detailMemory'); });
+    memBgStyle.addEventListener('change',function(){ if(memoryMainModal.classList.contains('show')) renderMemoryMain(); });
+    rpsModal.querySelectorAll('.rps-choices button').forEach(function(btn){
+        btn.addEventListener('click',function(){
+            var choice=this.dataset.choice;
+            playRPS(choice);
+        });
+    });
+    rpsCloseBtn.addEventListener('click',function(){ rpsModal.classList.remove('show'); });
+    replyDelayRange.addEventListener('input',function(){ replyDelayDisplay.textContent=this.value+' 秒'; replyDelay=parseInt(this.value); });
+    rpsDelayRange.addEventListener('input',function(){ rpsDelayDisplay.textContent=this.value; rpsDelay=parseInt(this.value); });
+    changeBgBtnTheme.addEventListener('click',function(){
+        bgFileInput.click();
+        bgFileInput.onchange=function(e){
+            var file=e.target.files[0];
+            if(!file) return;
+            compressImage(file,800,800,0.7).then(function(dataUrl){
+                localStorage.setItem(BG_KEY,dataUrl);
+                document.body.style.backgroundImage='url('+dataUrl+')';
+                document.body.style.backgroundSize='cover';
+                document.body.style.backgroundPosition='center';
+                document.body.style.backgroundColor='';
+                bgPreviewImg.src=dataUrl;
+                bgPreviewImg.style.display='inline-block';
+                bgFileInput.value='';
+                showToast('背景图已更新');
+            }).catch(function(){ alert('压缩失败'); });
+        };
+    });
+    removeBgBtnTheme.addEventListener('click',function(){
+        localStorage.removeItem(BG_KEY);
+        document.body.style.backgroundImage='none';
+        document.body.style.backgroundColor='transparent';
+        bgPreviewImg.style.display='none';
+        showToast('背景图已移除');
+    });
+    emojiToggle.addEventListener('click',function(){ emojiPanel.classList.toggle('open'); if(emojiPanel.classList.contains('open')) renderSavedEmojiInPanel(); });
+    initEmojiPanel();
+    emojiUploadBtn.addEventListener('click',function(){ emojiUploadInput.click(); });
+    emojiUploadInput.addEventListener('change',function(e){
+        var files=e.target.files;
+        if(!files.length) return;
+        var promises=[];
+        for(var i=0;i<files.length;i++) promises.push(compressImage(files[i],200,200,0.7));
+        Promise.all(promises).then(function(results){
+            emojiImages=emojiImages.concat(results);
+            saveEmoji(emojiImages);
+            renderSavedEmojiList();
+            renderSavedEmojiInPanel();
+            showToast('已添加 '+results.length+' 个表情');
+            emojiUploadInput.value='';
+        }).catch(function(){ alert('压缩失败'); });
+    });
+    sendImageBtn.addEventListener('click',function(){ sendImageInput.click(); });
+    sendImageInput.addEventListener('change',function(e){
+        var file=e.target.files[0];
+        if(!file) return;
+        compressImage(file,600,600,0.7).then(function(url){
+            sendMessage('<img src="'+url+'" style="max-width:200px;border-radius:8px;">');
+            sendImageInput.value='';
+        }).catch(function(){ alert('压缩失败'); });
+    });
+    fontSizeSelect.addEventListener('change',function(){ applyFontSize(this.value); saveData(); });
+    avatarSizeSelect.addEventListener('change',function(){ applyAvatarSize(this.value); saveData(); });
+    autoReplyEnable.addEventListener('change',updateAutoReplySettings);
+    autoReplyIntervalSelect.addEventListener('change',updateAutoReplySettings);
+    startAutoReply();
+    exportChatBtn.addEventListener('click',exportChatHistory);
+    importChatBtn.addEventListener('click',function(){ chatImportInput.click(); });
+    chatImportInput.addEventListener('change',function(e){
+        var file=e.target.files[0];
+        if(file){ importChatHistory(file); chatImportInput.value=''; }
+    });
+    settingsModal.addEventListener('click',function(e){ if(e.target===this) closeSettings(); });
+    memoryMainModal.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('show'); });
+    rpsModal.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('show'); });
+    noteModal.addEventListener('click',function(e){ if(e.target===this) this.classList.remove('show'); });
+    document.querySelectorAll('.detail-avatars .avatar-wrap').forEach(function(wrap){
+        wrap.addEventListener('click',function(){
+            var author=this.dataset.author;
+            document.querySelectorAll('.detail-avatars .avatar-wrap').forEach(function(w){ w.style.background='transparent'; });
+            this.style.background='rgba(74,144,226,0.08)';
+            if(selectedDate) showDetailForDate(selectedDate,author);
+            else showToast('请先选择日期');
+        });
+    });
+    detailWriteBtn.onclick=function(){
+        if(!selectedDate){ showToast('请先在日历中选择日期'); return; }
+        if(writeArea.classList.contains('open')){
+            writeArea.classList.remove('open');
+            detailWriteBtn.textContent='✏️ 写小记';
+            return;
+        }
+        writeArea.classList.add('open');
+        detailWriteBtn.textContent='✖ 取消';
+        noteWriteInput.value='';
+        writeImages=[];
+        noteWritePreview.innerHTML='';
+        var selfNotes=getNotesForDate(selectedDate,'self');
+        if(selfNotes.length>0){
+            var latest=selfNotes[selfNotes.length-1];
+            noteWriteInput.value=latest.text;
+            writeImages=latest.images||[];
+            var previewHtml='';
+            writeImages.forEach(function(src){ previewHtml+='<img src="'+src+'">'; });
+            noteWritePreview.innerHTML=previewHtml;
+        }
+        setTimeout(function(){ noteWriteInput.focus(); },100);
+    };
+    noteWriteSubmit.onclick=function(){
+        if(!selectedDate){ showToast('请先在日历中选择日期'); return; }
+        var text=noteWriteInput.value.trim();
+        if(!text && writeImages.length===0){ showToast('请写点内容或添加图片'); return; }
+        var newNote={id:generateId(),text:text,images:writeImages.slice(),author:'self',time:Date.now(),readBy:['self'],color:getRandomColor()};
+        notes.push(newNote);
+        saveNotes(notes);
+        writeArea.classList.remove('open');
+        detailWriteBtn.textContent='✏️ 写小记';
+        showToast('小记已保存');
+        renderCalendar(currentYear,currentMonth);
+        var selfWrap=document.querySelector('.detail-avatars .avatar-wrap[data-author="self"]');
+        if(selfWrap && selfWrap.style.background!=='transparent') showDetailForDate(selectedDate,'self');
+    };
+    noteWriteImageBtn.addEventListener('click',function(){ noteImageInput.click(); });
+    noteImageInput.addEventListener('change',function(e){
+        var files=e.target.files;
+        if(!files.length) return;
+        var promises=[];
+        for(var i=0;i<files.length;i++) promises.push(compressImage(files[i],300,300,0.7));
+        Promise.all(promises).then(function(results){
+            writeImages=writeImages.concat(results);
+            var previewHtml='';
+            writeImages.forEach(function(src){ previewHtml+='<img src="'+src+'">'; });
+            noteWritePreview.innerHTML=previewHtml;
+            noteImageInput.value='';
+        }).catch(function(){ alert('图片压缩失败'); });
+    });
+    noteCloseBtn.addEventListener('click',function(){ noteModal.classList.remove('show'); });
+    calPrev.addEventListener('click',function(){
+        var newMonth=currentMonth-1;
+        var newYear=currentYear;
+        if(newMonth<0){ newMonth=11; newYear--; }
+        renderCalendar(newYear,newMonth);
+    });
+    calNext.addEventListener('click',function(){
+        var newMonth=currentMonth+1;
+        var newYear=currentYear;
+        if(newMonth>11){ newMonth=0; newYear++; }
+        renderCalendar(newYear,newMonth);
+    });
+    scheduleContactNote();
+    renderMessages();
+    updateUI();
+    if(wordGroups.length>0){
+        currentSelectedGroupId=wordGroups[0].id;
+        renderWordGroups();
+        renderWordContent(currentSelectedGroupId);
+    }
+    var today=new Date();
+    selectedDate=new Date(today);
+    currentYear=selectedDate.getFullYear();
+    currentMonth=selectedDate.getMonth();
+    renderCalendar(currentYear,currentMonth);
+}
+init();
+</script>
+</body>
+</html>
